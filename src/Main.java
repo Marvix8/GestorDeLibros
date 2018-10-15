@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException {
 		PrintStream out = null;
 		
-		if(!System.getProperties().get("os.name").equals("Linux") // (1)
+		if (!System.getProperties().get("os.name").equals("Linux") // (1)
 				&& System.console() == null
 			) {
 			try {
@@ -56,33 +56,36 @@ public class Main {
 			out.println("7.- Salir");
 			do {// (10)
 				opcion = leer_entero("Seleccione una opci\u00F3n");// (11)
-				if(opcion<1 // (12)
-					|| opcion>7) // (13)
+				if (opcion < 1 // (12)
+					|| opcion > 7) // (13)
 					out.println("Opci\u00F3nn no v\u00E1lida."); // (14)
-			} while (opcion<1 // (15)
-					|| opcion>7); // (16)
+			} while (opcion < 1 // (15)
+					|| opcion > 7); // (16)
 				out.println(); // (17)
 				if (vector.isEmpty() // (18)
-					&& opcion!=1 //(19)
-					&& opcion!=7) { // (20)
+					&& opcion != 1 //(19)
+					&& opcion != 7) { // (20)
 				pausar("No hay registros.\n"); // (21)
 				continue;
 				}
-			if (opcion<5) { // (22)
+			if (opcion < 5) { // (22)
 				libro.setISBN(leer_cadena ("Ingrese el ISBN del libro")); // (23)
 				i = vector.indexOf(libro);
-				dato = i<0 ? null : vector.get(i);
-				if (dato!=null) { // (24)
+				if (i < 0)
+					dato = null;
+				else
+					dato = vector.get(i);
+				if (dato != null) { // (24)
 						out.println(); // (25)
 						imprimir(dato, contador);
 				}
 			}
-			if (opcion==1 // (26)
-					&& dato!=null) // (27)
+			if (opcion == 1 // (26)
+					&& dato != null) // (27)
 				out.println("El registro ya existe."); // (28)
-			else if (opcion>=2 // (29)
-					&& opcion<=4 // (30)
-					&& dato==null) // (31)
+			else if (opcion >= 2 // (29)
+					&& opcion <= 4 // (30)
+					&& dato == null) // (31)
 				out.println("\nRegistro no encontrado."); // (32)
 			else switch (opcion) { // (33)
 				case 1: // (34)
@@ -104,11 +107,11 @@ public class Main {
 					out.println("5.- anno de publicacion");
 			do { // (36)
 			subopcion = leer_entero ("Seleccione un n\u00FAmero de campo a modificar");
-			if (subopcion<1 // (37)
-					|| subopcion>5) // (38)
+			if (subopcion < 1 // (37)
+					|| subopcion > 5) // (38)
 				out.println("Opci\u00F3n no v\u00E1lida."); // (39)
-			} while (subopcion<1 // (40)
-					|| subopcion>5); // (41)
+			} while (subopcion < 1 // (40)
+					|| subopcion > 5); // (41)
 				switch (subopcion) { // (42)
 				case 1: // (43)
 					dato.setTitulo(leer_cadena ("Ingrese el nuevo titulo"));
@@ -139,22 +142,22 @@ public class Main {
 				case 6: // (51)
 					n = vector.size();
 					contador[0] = 0;
-					for (i=0; i<n; i++)// (52)
+					for (i = 0; i < n; i++)// (52)
 						imprimir(vector.get(i), contador);
 					out.println("Total de registros: " + contador[0] + ".");// (53)
 					break;
 				}
-				if (opcion<7 // (54)
-						&& opcion>=1) // (55)
+				if (opcion < 7 // (54)
+						&& opcion >= 1) // (55)
 					pausar(""); // (56)
-		} while (opcion!=7); // (57)
+		} while (opcion != 7); // (57)
 		
 		teclado.close();
 		PrintStream salida;
 		try {
 			salida = new PrintStream("./database/database.txt");
 			n = vector.size();
-			for (i=0; i<n; i++) // (59)
+			for (i = 0; i < n; i++) // (59)
 				imprimirEnArchivo(vector.get(i), salida); // (60)
 				salida.close();// (61)
 		} catch (Exception e) {
