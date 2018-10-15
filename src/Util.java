@@ -2,9 +2,9 @@ import java.io.PrintStream;
 
 public abstract class Util {
 	
-	public abstract Integer leer_entero(String mensaje);
+	public abstract Integer leerEntero(String mensaje);
 	
-	public abstract String leer_cadena(String mensaje);
+	public abstract String leerCadena(String mensaje);
 	
 	public abstract void pausar(String mensaje);
 	

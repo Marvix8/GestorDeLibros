@@ -85,7 +85,7 @@ public class Gestor extends Util {
 	private int seleccionarOpcionValida() {
 		int opcion;
 		do {
-			opcion = leer_entero("Seleccione una opci\u00F3n");
+			opcion = leerEntero("Seleccione una opci\u00F3n");
 			if (opcion < 1 || opcion > 7)
 				out.println("Opci\u00F3nn no v\u00E1lida.");
 		} while (opcion < 1 || opcion > 7);
@@ -135,7 +135,7 @@ public class Gestor extends Util {
 	
 	private void buscarISBN(int[] contador) {
 		int i;
-		libro.setISBN(leer_cadena ("Ingrese el ISBN del libro"));
+		libro.setISBN(leerCadena ("Ingrese el ISBN del libro"));
 		i = vector.indexOf(libro);
 		if (i < 0)
 			dato = null;
@@ -148,11 +148,11 @@ public class Gestor extends Util {
 	}
 	
 	private void nuevoLibro() {
-		libro.setTitulo(leer_cadena ("Ingrese el titulo"));
-		libro.setAutor(leer_cadena ("Ingrese el autor"));
-		libro.setEditorial(leer_cadena ("Ingrese el editorial"));
-		libro.setEdicion(leer_entero ("Ingrese el edicion"));
-		libro.setAnioPublicacion(leer_entero ("Ingrese el año de publicacion"));
+		libro.setTitulo(leerCadena ("Ingrese el titulo"));
+		libro.setAutor(leerCadena ("Ingrese el autor"));
+		libro.setEditorial(leerCadena ("Ingrese el editorial"));
+		libro.setEdicion(leerEntero ("Ingrese el edicion"));
+		libro.setAnioPublicacion(leerEntero ("Ingrese el año de publicacion"));
 		vector.add(libro);
 		libro = new Libro();
 		out.println("\nRegistro agregado correctamente.");
@@ -167,7 +167,7 @@ public class Gestor extends Util {
 		out.println("5.- anno de publicacion");
 		
 		do {
-			subopcion = leer_entero ("Seleccione un n\u00FAmero de campo a modificar");
+			subopcion = leerEntero ("Seleccione un n\u00FAmero de campo a modificar");
 			if (subopcion < 1 || subopcion > 5)
 				out.println("Opci\u00F3n no v\u00E1lida.");
 		} while (subopcion < 1 || subopcion > 5);
@@ -176,19 +176,19 @@ public class Gestor extends Util {
 	private void modificarLibro(int subopcion) {
 		switch (subopcion) {
 		case 1:
-			dato.setTitulo(leer_cadena ("Ingrese el nuevo titulo"));
+			dato.setTitulo(leerCadena ("Ingrese el nuevo titulo"));
 			break;
 		case 2:
-			dato.setAutor(leer_cadena ("Ingrese el nuevo autor"));
+			dato.setAutor(leerCadena ("Ingrese el nuevo autor"));
 			break;
 		case 3:
-			dato.setEditorial(leer_cadena ("Ingrese el nuevo editorial"));
+			dato.setEditorial(leerCadena ("Ingrese el nuevo editorial"));
 			break;
 		case 4:
-			dato.setEdicion(leer_entero ("Ingrese el nuevo edicion"));
+			dato.setEdicion(leerEntero ("Ingrese el nuevo edicion"));
 			break;
 		case 5:
-			dato.setAnioPublicacion(leer_entero ("Ingrese el nuevo año publicacion"));
+			dato.setAnioPublicacion(leerEntero ("Ingrese el nuevo año publicacion"));
 			break;
 		}
 		out.println("\nRegistro actualizado correctamente.");
@@ -225,14 +225,14 @@ public class Gestor extends Util {
 	}
 	
 	@Override
-	public Integer leer_entero(String mensaje) {
+	public Integer leerEntero(String mensaje) {
 		System.out.println(mensaje);
 		Scanner teclado = new Scanner(System.in);
 		return teclado.nextInt();
 	}
 
 	@Override
-	public String leer_cadena(String mensaje) {
+	public String leerCadena(String mensaje) {
 		System.out.println(mensaje);
 		Scanner teclado = new Scanner(System.in);
 		return teclado.nextLine();
