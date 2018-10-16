@@ -10,84 +10,88 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class Gestor extends Util {
-
-	private static final Scanner ENTRADA_TECLADO = new Scanner(System.in);
+	/**
+	 * Nombre y ubicación de la base de datos. <br>
+	 */
+	private static final String NOMBRE_BASE = "./database/database.txt";
 	private PrintStream out;
 	private Scanner teclado;
-	private Scanner entrada;
 	private Vector<Libro> vector;
 	private Libro libro;
 	private Libro dato;
 	private String[] campos;
 
+	/**
+	 * Inicializa el gestor de libros. <br>
+	 * CC: 2
+	 */
 	public Gestor() {
-		out = null;
-		teclado = new Scanner(System.in, "CP850");
-		vector = new Vector<Libro>();
-
+		this.out = null;
+		this.teclado = new Scanner(System.in, "CP850");
+		this.vector = new Vector<Libro>();
 		try {
-			entrada = new Scanner(new FileReader("./database/database.txt"));
+			Scanner entrada = new Scanner(new FileReader(NOMBRE_BASE));
 			while (entrada.hasNextLine()) {
-				campos = entrada.nextLine().split("\t");
-				libro = new Libro();
-				libro.setISBN(campos[0]);
-				libro.setTitulo(campos[1]);
-				libro.setAutor(campos[2]);
-				libro.setEditorial(campos[3]);
-				libro.setEdicion(Integer.parseInt(campos[4]));
-				libro.setAnioPublicacion(Integer.parseInt(campos[5]));
-				vector.add(libro);
+				this.campos = entrada.nextLine().split("\t");
+				this.libro = new Libro();
+				this.libro.setISBN(campos[0]);
+				this.libro.setTitulo(campos[1]);
+				this.libro.setAutor(campos[2]);
+				this.libro.setEditorial(campos[3]);
+				this.libro.setEdicion(Integer.parseInt(campos[4]));
+				this.libro.setAnioPublicacion(Integer.parseInt(campos[5]));
+				this.vector.add(this.libro);
 			}
 			entrada.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
 	}
 
+	/**
+	 * Ejecuta el gestor de libros. <br>
+	 */
 	public void ejecutar() {
 		if (!validarSistemaOperativo()) {
 			return;
 		}
-
 		int opcion, subopcion = 0;
-
 		int[] contador = { 0 };
-
 		libro = new Libro();
-
 		do {
 			menuPrincipal();
 			opcion = seleccionarOpcionValida();
 			out.println();
-
 			if (vector.isEmpty() && opcion != 1 && opcion != 7) {
 				pausar("No hay registros.\n");
 				continue;
 			}
-
 			if (opcion < 5) {
-				buscarISBN(contador);
+				this.buscarISBN(contador);
 			}
-
-			if (opcion == 1 && dato != null) {
+			if (opcion == 1 && this.dato != null) {
 				out.println("El registro ya existe.");
 			} else {
-				if (opcion >= 2 && opcion <= 4 && dato == null) {
+				if (opcion >= 2 && opcion <= 4 && this.dato == null) {
 					out.println("\nRegistro no encontrado.");
 				} else {
-					seleccionMenuPrincipal(contador, opcion, subopcion);
+					this.seleccionMenuPrincipal(contador, opcion, subopcion);
 				}
 			}
 			if (opcion < 7 && opcion >= 1) {
 				pausar("");
 			}
 		} while (opcion != 7);
-
 		teclado.close();
-		procesarCambios();
+		this.procesarCambios();
 	}
 
+	/**
+	 * Indica si una opción seleccionada es válida. <br>
+	 * CC: 3
+	 * 
+	 * @return Número de opción. <br>
+	 */
 	private int seleccionarOpcionValida() {
 		int opcion;
 		do {
@@ -98,6 +102,10 @@ public class Gestor extends Util {
 		return opcion;
 	}
 
+	/**
+	 * Muestra el menú principal del gestor. <br>
+	 * CC: 1
+	 */
 	private void menuPrincipal() {
 		out.println("MEN\u00DA");// (9)
 		out.println("1.- Altas");
@@ -109,139 +117,197 @@ public class Gestor extends Util {
 		out.println("7.- Salir");
 	}
 
+	/**
+	 * Selecciona una opción del menú principal. <br>
+	 * CC:
+	 * 
+	 * @param contador
+	 * @param opcion
+	 * @param subopcion
+	 */
 	private void seleccionMenuPrincipal(int[] contador, int opcion, int subopcion) {
-		int i;
-		int n;
-
 		switch (opcion) {
 		case 1:
-			nuevoLibro();
+			this.nuevoLibro();
 			break;
 		case 3:
-			menuModificarLibro(subopcion);
-			modificarLibro(subopcion);
+			this.menuModificarLibro(subopcion);
+			this.modificarLibro(subopcion);
 			break;
 		case 4:
-			vector.remove(dato);
-			out.println("Registro borrado correctamente.");
+			this.vector.remove(dato);
+			this.out.println("Registro borrado correctamente.");
 			break;
 		case 5:
 			Collections.sort(vector);
-			out.println("Registros ordenados correctamente.");
+			this.out.println("Registros ordenados correctamente.");
 			break;
 		case 6:
-			n = vector.size();
 			contador[0] = 0;
-			for (i = 0; i < n; i++)
-				imprimir(vector.get(i), contador);
-			out.println("Total de registros: " + contador[0] + ".");
+			for (int i = 0; i < this.vector.size(); i++) {
+				this.imprimir(vector.get(i), contador);
+			}
+			this.out.println("Total de registros: " + contador[0] + ".");
 			break;
 		}
 	}
 
+	/**
+	 * Busca un libro por su ISBN. <br>
+	 * CC: 3 //4
+	 * 
+	 * @param contador
+	 */
 	private void buscarISBN(int[] contador) {
 		int i;
-		libro.setISBN(leerCadena("Ingrese el ISBN del libro"));
-		i = vector.indexOf(libro);
-		if (i < 0)
-			dato = null;
-		else
-			dato = vector.get(i);
-		if (dato != null) {
-			out.println();
-			imprimir(dato, contador);
+		this.libro.setISBN(leerCadena("Ingrese el ISBN del libro"));
+		i = this.vector.indexOf(this.libro);
+		// if (i < 0) {
+		// this.dato = null;
+		// } else {
+		// this.dato = this.vector.get(i);
+		// }
+		// if (this.dato != null) {
+		// this.out.println();
+		// this.imprimir(this.dato, contador);
+		// }
+		if (i < 0) {
+			this.dato = null;
+			return;
+		} else {
+			this.dato = this.vector.get(i);
+			this.out.println();
+			this.imprimir(this.dato, contador);
 		}
 	}
 
+	/**
+	 * Carga un nuevo libro. <br>
+	 * CC: 1
+	 */
 	private void nuevoLibro() {
-		libro.setTitulo(leerCadena("Ingrese el titulo"));
-		libro.setAutor(leerCadena("Ingrese el autor"));
-		libro.setEditorial(leerCadena("Ingrese el editorial"));
-		libro.setEdicion(leerEntero("Ingrese el edicion"));
-		libro.setAnioPublicacion(leerEntero("Ingrese el año de publicacion"));
-		vector.add(libro);
-		libro = new Libro();
+		this.libro.setTitulo(leerCadena("Ingrese el titulo"));
+		this.libro.setAutor(leerCadena("Ingrese el autor"));
+		this.libro.setEditorial(leerCadena("Ingrese el editorial"));
+		this.libro.setEdicion(leerEntero("Ingrese el edicion"));
+		this.libro.setAnioPublicacion(leerEntero("Ingrese el año de publicacion"));
+		this.vector.add(this.libro);
+		this.libro = new Libro();
 		out.println("\nRegistro agregado correctamente.");
 	}
 
+	/**
+	 * Carga el menú para modificar información sobre un libro. <br>
+	 * CC: 3
+	 * 
+	 * @param subopcion
+	 */
 	private void menuModificarLibro(int subopcion) {
-		out.println("Men\u00FA de modificaci\u00F3n de campos");
-		out.println("1.- titulo");
-		out.println("2.- autor");
-		out.println("3.- editorial");
-		out.println("4.- edicion");
-		out.println("5.- anno de publicacion");
+		this.out.println("Men\u00FA de modificaci\u00F3n de campos");
+		this.out.println("1.- titulo");
+		this.out.println("2.- autor");
+		this.out.println("3.- editorial");
+		this.out.println("4.- edicion");
+		this.out.println("5.- anno de publicacion");
 
 		do {
-			subopcion = leerEntero("Seleccione un n\u00FAmero de campo a modificar");
-			if (subopcion < 1 || subopcion > 5)
-				out.println("Opci\u00F3n no v\u00E1lida.");
+			subopcion = this.leerEntero("Seleccione un n\u00FAmero de campo a modificar");
+			if (subopcion < 1 || subopcion > 5) {
+				this.out.println("Opci\u00F3n no v\u00E1lida.");
+			}
 		} while (subopcion < 1 || subopcion > 5);
 	}
 
+	/**
+	 * Modifica información sobre un libro. <br>
+	 * CC: 5
+	 * 
+	 * @param subopcion
+	 *            Posición de la modificación a realizar. <br>
+	 */
 	private void modificarLibro(int subopcion) {
 		switch (subopcion) {
 		case 1:
-			dato.setTitulo(leerCadena("Ingrese el nuevo titulo"));
+			this.dato.setTitulo(leerCadena("Ingrese el nuevo titulo"));
 			break;
 		case 2:
-			dato.setAutor(leerCadena("Ingrese el nuevo autor"));
+			this.dato.setAutor(leerCadena("Ingrese el nuevo autor"));
 			break;
 		case 3:
-			dato.setEditorial(leerCadena("Ingrese el nuevo editorial"));
+			this.dato.setEditorial(leerCadena("Ingrese el nuevo editorial"));
 			break;
 		case 4:
-			dato.setEdicion(leerEntero("Ingrese el nuevo edicion"));
+			this.dato.setEdicion(leerEntero("Ingrese el nuevo edicion"));
 			break;
 		case 5:
-			dato.setAnioPublicacion(leerEntero("Ingrese el nuevo año publicacion"));
+			this.dato.setAnioPublicacion(leerEntero("Ingrese el nuevo año publicacion"));
 			break;
 		}
-		out.println("\nRegistro actualizado correctamente.");
+		this.out.println("\nRegistro actualizado correctamente.");
 	}
 
+	/**
+	 * Valida el sistema operativo. <br>
+	 * CC: 2
+	 * 
+	 * @return <b>true</b> si no es Linux o falla el encoding. <br>
+	 *         <b>false</b> de lo contrario. <br>
+	 */
 	private boolean validarSistemaOperativo() {
-		if (!System.getProperties().get("os.name").equals("Linux") // (1)
-				&& System.console() == null) {
+		if (!System.getProperties().get("os.name").equals("Linux") && System.console() == null) {
 			try {
 				out = new PrintStream(System.out, true, "CP850");
 				return true;
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
-			} // (3)
+			}
 		}
 		return false;
 	}
 
+	/**
+	 * Procesa los cambios en la base de datos. <br>
+	 * CC: 2
+	 */
 	private void procesarCambios() {
-		int i, n;
-
 		PrintStream salida;
 		try {
-			salida = new PrintStream("./database/database.txt");
-			n = vector.size();
-			for (i = 0; i < n; i++)
-				imprimirEnArchivo(vector.get(i), salida);
+			salida = new PrintStream(NOMBRE_BASE);
+			for (int i = 0; i < this.vector.size(); i++) {
+				this.imprimirEnArchivo(vector.get(i), salida);
+			}
 			salida.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Lee un entero desde consola. <br>
+	 * CC: 1
+	 */
+	@SuppressWarnings("resource")
 	@Override
 	public Integer leerEntero(String mensaje) {
 		System.out.println(mensaje);
-		// Scanner teclado = new Scanner(System.in);
-		return ENTRADA_TECLADO.nextInt();
-		// return teclado.nextInt();
+		return new Scanner(System.in).nextInt();
 	}
 
+	/**
+	 * Lee una cadena desde consola. <br>
+	 * CC: 1
+	 */
+	@SuppressWarnings("resource")
 	@Override
 	public String leerCadena(String mensaje) {
 		System.out.println(mensaje);
-		return ENTRADA_TECLADO.nextLine();
+		return new Scanner(System.in).nextLine();
 	}
 
+	/**
+	 * Pausa la ejecucción del gestor. <br>
+	 * CC: 1
+	 */
 	@Override
 	public void pausar(String mensaje) {
 		System.out.println(mensaje);
@@ -252,6 +318,10 @@ public class Gestor extends Util {
 		}
 	}
 
+	/**
+	 * Imprime los libros por pantalla. <br>
+	 * CC: 1
+	 */
 	@Override
 	public void imprimir(Libro libro, int[] contador) {
 		contador[0]++;
@@ -259,6 +329,10 @@ public class Gestor extends Util {
 				+ libro.getEditorial() + "\t" + libro.getEdicion() + "\t" + libro.getAnioPublicacion());
 	}
 
+	/**
+	 * Graba los libros en archivo. <br>
+	 * CC: 1
+	 */
 	@Override
 	public void imprimirEnArchivo(Libro libro, PrintStream salida) {
 		salida.println(libro.getISBN() + "\t" + libro.getTitulo() + "\t" + libro.getAutor() + "\t"
