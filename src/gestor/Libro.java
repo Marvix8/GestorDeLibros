@@ -1,6 +1,5 @@
 package gestor;
 
-//public class Libro implements Comparable {
 public class Libro implements Comparable {
 
 	private String ISBN;
