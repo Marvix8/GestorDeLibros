@@ -1,3 +1,5 @@
+package gestor;
+
 public class Libro implements Comparable {
 
 	private String ISBN;
@@ -6,55 +8,46 @@ public class Libro implements Comparable {
 	private String editorial;
 	private int edicion;
 	private int anioPublicacion;
-	
+
 	public Libro() {
-		
+
 	}
-	
+
 	public String getISBN() {
 		return ISBN;
 	}
-
 
 	public void setISBN(String iSBN) {
 		ISBN = iSBN;
 	}
 
-
 	public String getTitulo() {
 		return titulo;
 	}
-
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
 
-
 	public String getAutor() {
 		return autor;
 	}
-
 
 	public void setAutor(String autor) {
 		this.autor = autor;
 	}
 
-
 	public int getEdicion() {
 		return edicion;
 	}
-
 
 	public void setEdicion(int edicion) {
 		this.edicion = edicion;
 	}
 
-
 	public int getAnioPublicacion() {
 		return anioPublicacion;
 	}
-
 
 	public void setAnioPublicacion(int anioPublicacion) {
 		this.anioPublicacion = anioPublicacion;
@@ -67,21 +60,21 @@ public class Libro implements Comparable {
 	public void setEditorial(String editorial) {
 		this.editorial = editorial;
 	}
-	
+
 	@Override
 	public int compareTo(Object obj) {
-		if(!(obj instanceof Libro))
+		if (!(obj instanceof Libro))
 			throw new ClassCastException();
-		
+
 		Libro libro = (Libro) obj;
-		
-	    if (this.getISBN().compareTo(libro.getISBN()) > 0)
-	          return 1;
-	       else if (this.getISBN().compareTo(libro.getISBN()) < 0)
-	          return -1;
-	       else   
-	          return 0;
-		
+
+		if (this.getISBN().compareTo(libro.getISBN()) > 0)
+			return 1;
+		else if (this.getISBN().compareTo(libro.getISBN()) < 0)
+			return -1;
+		else
+			return 0;
+
 	}
 
 	@Override
@@ -108,5 +101,5 @@ public class Libro implements Comparable {
 			return false;
 		return true;
 	}
-	
+
 }
