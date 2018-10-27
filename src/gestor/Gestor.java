@@ -50,8 +50,39 @@ public class Gestor extends Util {
 	}
 
 	/**
+	 * Controla que la base no se encuentre vacia y que la opción solicitada no
+	 * se vea afectado por esto. <br>
+	 * 
+	 * @param opcion
+	 *            Opción seleccionada por el usuario. <br>
+	 * @return <b>true</b> si no puede continuar. <br>
+	 *         <b>false</b> si puede continuar. <br>
+	 */
+	private boolean controlarBaseVacia(final int opcion) {
+		if (this.libros.isEmpty() && opcion != 1 && opcion != 7) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Controla que un registro exista para ciertas opciones. <br>
+	 * 
+	 * @param opcion
+	 *            Opción seleccionada por el usuario. <br>
+	 * @return <b>true</b> si no existe. <br>
+	 *         <b>false</b> si existe. <br>
+	 */
+	private boolean registroInexitente(final int opcion) {
+		if (opcion >= 2 && opcion <= 4 && this.dato == null) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Ejecuta el gestor de libros. <br>
-	 * CC: 7
+	 * CC: 9
 	 */
 	public void ejecutar() {
 		this.controlarSalidaPorConsola();
@@ -62,7 +93,7 @@ public class Gestor extends Util {
 			this.cargarMenuPrincipal();
 			opcion = this.leerOpcionUsuario();
 			this.out.println();
-			if (this.libros.isEmpty() && opcion != 1 && opcion != 7) {
+			if (this.controlarBaseVacia(opcion)) {
 				pausar("No hay registros.\n");
 				// Si no hay registros no se puede hacer nada más que agregar.
 				continue;
@@ -75,7 +106,7 @@ public class Gestor extends Util {
 			if (opcion == 1 && this.dato != null) {
 				out.println("El registro ya existe.");
 			} else {
-				if (opcion >= 2 && opcion <= 4 && this.dato == null) {
+				if (this.registroInexitente(opcion)) {
 					out.println("\nRegistro no encontrado.");
 				} else {
 					// Si ya no tengo los casos que puede salir realizo la
