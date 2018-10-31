@@ -1,6 +1,5 @@
 package gestor;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -43,10 +42,15 @@ public class Gestor extends Util {
 	 * Crea un gestor de libros. <br>
 	 * CC: 1
 	 */
-	public Gestor() {
-		this.teclado = new Scanner(System.in, ENCODING);
-		this.libros = new Vector<Libro>();
-		this.contador[0] = 0;
+	public Gestor() throws IOException {
+		try {
+			// this.teclado = new Scanner(System.in, ENCODING);
+			this.libros = new Vector<Libro>();
+			this.contador[0] = 0;
+			this.leeerLibrosEnBase();
+		} catch (IOException exception) {
+			throw exception;
+		}
 	}
 
 	/**
@@ -86,7 +90,7 @@ public class Gestor extends Util {
 	 */
 	public void ejecutar() {
 		this.controlarSalidaPorConsola();
-		this.leeerLibrosEnBase();
+		// this.leeerLibrosEnBase();
 		int opcion;
 		this.libro = new Libro();
 		do {
@@ -124,9 +128,8 @@ public class Gestor extends Util {
 
 	/**
 	 * Lee los libros en base. <br>
-	 * CC: 2
 	 */
-	private void leeerLibrosEnBase() {
+	private void leeerLibrosEnBase() throws IOException {
 		try {
 			Libro libro;
 			String[] campos;
@@ -143,8 +146,8 @@ public class Gestor extends Util {
 				this.libros.add(libro);
 			}
 			entrada.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		} catch (IOException exception) {
+			throw exception;
 		}
 	}
 
@@ -313,9 +316,8 @@ public class Gestor extends Util {
 
 	/**
 	 * Procesa los cambios en la base de datos. <br>
-	 * CC: 2
 	 */
-	private void procesarCambios() {
+	public String procesarCambios() {
 		PrintStream salida;
 		try {
 			salida = new PrintStream(NOMBRE_BASE);
@@ -323,14 +325,15 @@ public class Gestor extends Util {
 				this.imprimirEnArchivo(libros.get(i), salida);
 			}
 			salida.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			return new StringBuilder("Ha ocurrido un error al guardar la base de datos: ").append(e.getMessage())
+					.toString();
 		}
 	}
 
 	/**
 	 * Lee un entero desde consola. <br>
-	 * CC: 1
 	 */
 	@SuppressWarnings("resource")
 	@Override
@@ -341,7 +344,6 @@ public class Gestor extends Util {
 
 	/**
 	 * Lee una cadena desde consola. <br>
-	 * CC: 1
 	 */
 	@SuppressWarnings("resource")
 	@Override
