@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -13,13 +14,16 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 
 import constantes.Labels;
 import constantes.Mensajes;
 import constantes.Titulos;
+import excepciones.BaseVaciaException;
+import excepciones.DatoInexistenteException;
 import gestor.Gestor;
-import javax.swing.JSeparator;
+import gestor.GestorOpciones;
 
 /**
  * Clase que administra la ventana principal del gestor. <br>
@@ -56,7 +60,9 @@ public class VentanaPrincipal extends JFrame {
 			this.gestor = new Gestor();
 		} catch (IOException e) {
 			VentanaMensaje ventanaMensaje = new VentanaMensaje(Titulos.ERROR_BASE_DATOS.getTitulo(),
-					new StringBuilder(Mensajes.ERROR_BASE_DATOS.getMensaje()).append(e.getMessage()).toString());
+					new StringBuilder(Mensajes.ERROR_BASE_DATOS.getMensaje()).append(e.getMessage()).toString(),
+					Toolkit.getDefaultToolkit().getImage(
+							VentanaMensaje.class.getResource("/javax/swing/plaf/metal/icons/ocean/error.png")));
 			ventanaMensaje.setVisible(true);
 			System.exit(EXIT_ON_CLOSE);
 		}
@@ -79,16 +85,16 @@ public class VentanaPrincipal extends JFrame {
 		JButton btnAltas = new JButton(Labels.ALTAS.getLabel());
 		btnAltas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				darLibroDeAlta();
 			}
 		});
 
-		JSeparator separator_6 = new JSeparator();
-		GridBagConstraints gbc_separator_6 = new GridBagConstraints();
-		gbc_separator_6.insets = new Insets(0, 0, 5, 5);
-		gbc_separator_6.gridx = 1;
-		gbc_separator_6.gridy = 0;
-		contentPane.add(separator_6, gbc_separator_6);
+		JSeparator separator1 = new JSeparator();
+		GridBagConstraints gbc_separator1 = new GridBagConstraints();
+		gbc_separator1.insets = new Insets(0, 0, 5, 5);
+		gbc_separator1.gridx = 1;
+		gbc_separator1.gridy = 0;
+		contentPane.add(separator1, gbc_separator1);
 		btnAltas.setMaximumSize(new Dimension(160, 28));
 		GridBagConstraints gbc_btnAltas = new GridBagConstraints();
 		gbc_btnAltas.anchor = GridBagConstraints.NORTH;
@@ -98,14 +104,19 @@ public class VentanaPrincipal extends JFrame {
 		gbc_btnAltas.gridy = 1;
 		contentPane.add(btnAltas, gbc_btnAltas);
 
-		JSeparator separator_2 = new JSeparator();
-		GridBagConstraints gbc_separator_2 = new GridBagConstraints();
-		gbc_separator_2.insets = new Insets(0, 0, 5, 5);
-		gbc_separator_2.gridx = 1;
-		gbc_separator_2.gridy = 2;
-		contentPane.add(separator_2, gbc_separator_2);
+		JSeparator separator2 = new JSeparator();
+		GridBagConstraints gbc_separator2 = new GridBagConstraints();
+		gbc_separator2.insets = new Insets(0, 0, 5, 5);
+		gbc_separator2.gridx = 1;
+		gbc_separator2.gridy = 2;
+		contentPane.add(separator2, gbc_separator2);
 
 		JButton btnBajas = new JButton(Labels.BAJAS.getLabel());
+		btnBajas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				darDeBajaLibro();
+			}
+		});
 		GridBagConstraints gbc_btnBajas = new GridBagConstraints();
 		gbc_btnBajas.anchor = GridBagConstraints.NORTH;
 		gbc_btnBajas.fill = GridBagConstraints.HORIZONTAL;
@@ -114,12 +125,12 @@ public class VentanaPrincipal extends JFrame {
 		gbc_btnBajas.gridy = 3;
 		contentPane.add(btnBajas, gbc_btnBajas);
 
-		JSeparator separator_1 = new JSeparator();
-		GridBagConstraints gbc_separator_1 = new GridBagConstraints();
-		gbc_separator_1.insets = new Insets(0, 0, 5, 5);
-		gbc_separator_1.gridx = 1;
-		gbc_separator_1.gridy = 4;
-		contentPane.add(separator_1, gbc_separator_1);
+		JSeparator separator3 = new JSeparator();
+		GridBagConstraints gbc_separator3 = new GridBagConstraints();
+		gbc_separator3.insets = new Insets(0, 0, 5, 5);
+		gbc_separator3.gridx = 1;
+		gbc_separator3.gridy = 4;
+		contentPane.add(separator3, gbc_separator3);
 
 		JButton btnActualizaciones = new JButton(Labels.ACTUALIZACIONES.getLabel());
 		GridBagConstraints gbc_btnActualizaciones = new GridBagConstraints();
@@ -129,14 +140,19 @@ public class VentanaPrincipal extends JFrame {
 		gbc_btnActualizaciones.gridy = 5;
 		contentPane.add(btnActualizaciones, gbc_btnActualizaciones);
 
-		JSeparator separator = new JSeparator();
-		GridBagConstraints gbc_separator = new GridBagConstraints();
-		gbc_separator.insets = new Insets(0, 0, 5, 5);
-		gbc_separator.gridx = 1;
-		gbc_separator.gridy = 6;
-		contentPane.add(separator, gbc_separator);
+		JSeparator separator4 = new JSeparator();
+		GridBagConstraints gbc_separator4 = new GridBagConstraints();
+		gbc_separator4.insets = new Insets(0, 0, 5, 5);
+		gbc_separator4.gridx = 1;
+		gbc_separator4.gridy = 6;
+		contentPane.add(separator4, gbc_separator4);
 
 		JButton btnConsultas = new JButton(Labels.CONSULTAS.getLabel());
+		btnConsultas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				consultarLibro();
+			}
+		});
 		GridBagConstraints gbc_btnConsultas = new GridBagConstraints();
 		gbc_btnConsultas.fill = GridBagConstraints.BOTH;
 		gbc_btnConsultas.insets = new Insets(0, 0, 5, 5);
@@ -144,14 +160,19 @@ public class VentanaPrincipal extends JFrame {
 		gbc_btnConsultas.gridy = 7;
 		contentPane.add(btnConsultas, gbc_btnConsultas);
 
-		JSeparator separator_3 = new JSeparator();
-		GridBagConstraints gbc_separator_3 = new GridBagConstraints();
-		gbc_separator_3.insets = new Insets(0, 0, 5, 5);
-		gbc_separator_3.gridx = 1;
-		gbc_separator_3.gridy = 8;
-		contentPane.add(separator_3, gbc_separator_3);
+		JSeparator separator5 = new JSeparator();
+		GridBagConstraints gbc_separator5 = new GridBagConstraints();
+		gbc_separator5.insets = new Insets(0, 0, 5, 5);
+		gbc_separator5.gridx = 1;
+		gbc_separator5.gridy = 8;
+		contentPane.add(separator5, gbc_separator5);
 
 		JButton btnListarRegistros = new JButton(Labels.LISTAR_REGSTROS.getLabel());
+		btnListarRegistros.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				listarLibros();
+			}
+		});
 		GridBagConstraints gbc_btnListarRegistros = new GridBagConstraints();
 		gbc_btnListarRegistros.fill = GridBagConstraints.BOTH;
 		gbc_btnListarRegistros.insets = new Insets(0, 0, 5, 5);
@@ -159,14 +180,19 @@ public class VentanaPrincipal extends JFrame {
 		gbc_btnListarRegistros.gridy = 9;
 		contentPane.add(btnListarRegistros, gbc_btnListarRegistros);
 
-		JSeparator separator_4 = new JSeparator();
-		GridBagConstraints gbc_separator_4 = new GridBagConstraints();
-		gbc_separator_4.insets = new Insets(0, 0, 5, 5);
-		gbc_separator_4.gridx = 1;
-		gbc_separator_4.gridy = 10;
-		contentPane.add(separator_4, gbc_separator_4);
+		JSeparator separator6 = new JSeparator();
+		GridBagConstraints gbc_separator6 = new GridBagConstraints();
+		gbc_separator6.insets = new Insets(0, 0, 5, 5);
+		gbc_separator6.gridx = 1;
+		gbc_separator6.gridy = 10;
+		contentPane.add(separator6, gbc_separator6);
 
 		JButton btnOrdenarRegistros = new JButton(Labels.ORDENAR_REGISTROS.getLabel());
+		btnOrdenarRegistros.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ordenarLibros();
+			}
+		});
 		GridBagConstraints gbc_btnOrdenarRegistros = new GridBagConstraints();
 		gbc_btnOrdenarRegistros.fill = GridBagConstraints.BOTH;
 		gbc_btnOrdenarRegistros.insets = new Insets(0, 0, 5, 5);
@@ -174,18 +200,17 @@ public class VentanaPrincipal extends JFrame {
 		gbc_btnOrdenarRegistros.gridy = 11;
 		contentPane.add(btnOrdenarRegistros, gbc_btnOrdenarRegistros);
 
-		JSeparator separator_5 = new JSeparator();
-		GridBagConstraints gbc_separator_5 = new GridBagConstraints();
-		gbc_separator_5.insets = new Insets(0, 0, 5, 5);
-		gbc_separator_5.gridx = 1;
-		gbc_separator_5.gridy = 12;
-		contentPane.add(separator_5, gbc_separator_5);
+		JSeparator separator7 = new JSeparator();
+		GridBagConstraints gbc_separator7 = new GridBagConstraints();
+		gbc_separator7.insets = new Insets(0, 0, 5, 5);
+		gbc_separator7.gridx = 1;
+		gbc_separator7.gridy = 12;
+		contentPane.add(separator7, gbc_separator7);
 
 		JButton btnSalir = new JButton(Labels.SALIR.getLabel());
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaSalir ventanaSalir = new VentanaSalir(gestor);
-				ventanaSalir.setVisible(true);
+				salirDelGestor();
 			}
 		});
 		GridBagConstraints gbc_btnSalir = new GridBagConstraints();
@@ -196,4 +221,142 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(btnSalir, gbc_btnSalir);
 	}
 
+	/**
+	 * Da un libro de alta. <br>
+	 */
+	private void darLibroDeAlta() {
+		try {
+			try {
+				this.gestor.controlarBaseVacia(GestorOpciones.ALTA);
+			} catch (BaseVaciaException e) {
+				// Si está vacía permito que se carguen datos.
+			}
+			VentanaBuscarISBN ventanaBusqueda = new VentanaBuscarISBN(gestor);
+			ventanaBusqueda.setVisible(true);
+			this.gestor.buscarLibroPorISBN();
+			// Si encontró el libro es porque ya se encuentra en la base de
+			// datos. Aviso al usuario y salgo.
+			VentanaMensaje ventanaMensaje = new VentanaMensaje(
+					new StringBuilder(Titulos.ISBN_INEXISTENTE.getTitulo()).append(gestor.getISBN()).toString(),
+					Mensajes.LIBRO_YA_EXISTENTE.getMensaje(), Toolkit.getDefaultToolkit().getImage(
+							VentanaMensaje.class.getResource("/javax/swing/plaf/metal/icons/ocean/error.png")));
+			ventanaMensaje.setVisible(true);
+		} catch (DatoInexistenteException e) {
+			VentanaInformacionLibro ventanaInformacionLibro = new VentanaInformacionLibro(null);
+
+		}
+	}
+
+	/**
+	 * Consulta por un libro. <br>
+	 */
+	private void consultarLibro() {
+		try {
+			this.gestor.controlarBaseVacia(GestorOpciones.CONSULTA);
+			VentanaBuscarISBN ventanaBusqueda = new VentanaBuscarISBN(gestor);
+			ventanaBusqueda.setVisible(true);
+			if (!ventanaBusqueda.isCancelado()) {
+				this.gestor.buscarLibroPorISBN();
+				VentanaLibros ventanaLibros = new VentanaLibros(gestor.getLibroActual());
+				ventanaLibros.setVisible(true);
+			}
+		} catch (BaseVaciaException e) {
+			this.cargarVentanaBaseVacia();
+		} catch (DatoInexistenteException e) {
+			this.cargarVentanaLibroInexistente();
+		}
+	}
+
+	/**
+	 * Da de baja un libro. <br>
+	 */
+	private void darDeBajaLibro() {
+		try {
+			this.gestor.controlarBaseVacia(GestorOpciones.BAJA);
+			VentanaBuscarISBN ventanaBusqueda = new VentanaBuscarISBN(gestor);
+			ventanaBusqueda.setVisible(true);
+			if (!ventanaBusqueda.isCancelado()) {
+				this.gestor.buscarLibroPorISBN();
+				this.gestor.darDeBajaLibro();
+				this.cargarVentanaExito(Mensajes.REGISTRO_BORRADO.getMensaje());
+			}
+		} catch (BaseVaciaException e) {
+			this.cargarVentanaBaseVacia();
+		} catch (DatoInexistenteException e) {
+			this.cargarVentanaLibroInexistente();
+		}
+	}
+
+	/**
+	 * Lista los libros en la base de datos. <br>
+	 */
+	private void listarLibros() {
+		try {
+			this.gestor.controlarBaseVacia(GestorOpciones.LISTAR);
+			VentanaLibros ventanaLibros = new VentanaLibros(this.gestor.getLibros());
+			ventanaLibros.setVisible(true);
+		} catch (BaseVaciaException e) {
+			this.cargarVentanaBaseVacia();
+		}
+	}
+
+	/**
+	 * Ordena los libros en la base de datos. <br>
+	 */
+	private void ordenarLibros() {
+		try {
+			this.gestor.controlarBaseVacia(GestorOpciones.ORDENAR);
+			this.gestor.ordenarLibros();
+			VentanaMensaje ventanaMensaje = new VentanaMensaje(Titulos.EXITO.getTitulo(),
+					Mensajes.LIBROS_ORDENADOS.getMensaje(), null);
+			ventanaMensaje.setVisible(true);
+		} catch (BaseVaciaException e) {
+			this.cargarVentanaBaseVacia();
+		}
+	}
+
+	/**
+	 * Sale del gestor. <br>
+	 */
+	private void salirDelGestor() {
+		VentanaSalir ventanaSalir = new VentanaSalir(this.gestor);
+		ventanaSalir.setVisible(true);
+	}
+
+	/**
+	 * Carga la ventana de mensajes indicando que una acción fue realizada con
+	 * éxito. <br>
+	 * 
+	 * @param mensaje
+	 *            Mensaje a mostrar. <br>
+	 */
+	private void cargarVentanaExito(final String mensaje) {
+		VentanaMensaje ventanaMensaje = new VentanaMensaje(Titulos.EXITO.getTitulo(), mensaje,
+				Toolkit.getDefaultToolkit()
+						.getImage(VentanaMensaje.class.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
+		ventanaMensaje.setVisible(true);
+	}
+
+	/**
+	 * Carga la ventana de mensajes indicando que la base de datos se encuentra
+	 * vacía. <br>
+	 */
+	private void cargarVentanaBaseVacia() {
+		VentanaMensaje ventanaMensaje = new VentanaMensaje(
+				new StringBuilder(Titulos.ISBN_INEXISTENTE.getTitulo()).append(gestor.getISBN()).toString(),
+				Mensajes.BASE_VACIA.getMensaje(), Toolkit.getDefaultToolkit()
+						.getImage(VentanaMensaje.class.getResource("/javax/swing/plaf/metal/icons/ocean/error.png")));
+		ventanaMensaje.setVisible(true);
+	}
+
+	/**
+	 * Carga la ventana de mensajes indicando que no existe un libro con el ISBN
+	 * indicado. <br>
+	 */
+	private void cargarVentanaLibroInexistente() {
+		VentanaMensaje ventanaMensaje = new VentanaMensaje(Titulos.BASE_DATOS_VACIA.getTitulo(),
+				Mensajes.ERROR_BUSQUEDA.getMensaje(), Toolkit.getDefaultToolkit()
+						.getImage(VentanaMensaje.class.getResource("/javax/swing/plaf/metal/icons/ocean/error.png")));
+		ventanaMensaje.setVisible(true);
+	}
 }

@@ -2,6 +2,9 @@ package ventana;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -11,9 +14,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import constantes.Labels;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 /**
  * Clase que muestra una ventana con un mensaje de una acción realizada. <br>
@@ -29,9 +29,12 @@ public class VentanaMensaje extends JDialog {
 	 *            Título de la ventana. <br>
 	 * @param mensaje
 	 *            Mensaje a mostrar. <br>
+	 * @param icono
+	 *            Ícono a mostrar. <br>
 	 */
-	public VentanaMensaje(final String titulo, final String mensaje) {
+	public VentanaMensaje(final String titulo, final String mensaje, final Image icono) {
 		setTitle(titulo);
+		setIconImage(icono);
 		setResizable(false);
 		setModal(true);
 		setAlwaysOnTop(true);

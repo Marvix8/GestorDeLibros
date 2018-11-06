@@ -33,6 +33,30 @@ public enum Labels {
 	 */
 	SALIR("Salir"),
 	/**
+	 * Código de ISBN. <br>
+	 */
+	ISBN("ISBN:"),
+	/**
+	 * Título del libro. <br>
+	 */
+	TITULO("Titulo:"),
+	/**
+	 * Autor del libro. <br>
+	 */
+	AUTOR("Autor:"),
+	/**
+	 * Editorial del libro. <br>
+	 */
+	EDITORIAL("Editorial:"),
+	/**
+	 * Edición del libro. <br>
+	 */
+	EDICION("Edición:"),
+	/**
+	 * Año de publicación del libro. <br>
+	 */
+	ANO_PUBLICACION("Año publicación:"),
+	/**
 	 * Label de buscar. <br>
 	 */
 	BUSCAR("Buscar"),
@@ -52,13 +76,26 @@ public enum Labels {
 	 * 
 	 */
 	CANCELAR("Cancelar");
-
+	/**
+	 * Label del mensaje. <br>
+	 */
 	private String label;
 
+	/**
+	 * Devuelve el label con el mensaje. <br>
+	 * 
+	 * @return Label. <br>
+	 */
 	public String getLabel() {
 		return this.label;
 	}
 
+	/**
+	 * Crea un label. <br>
+	 * 
+	 * @param label
+	 *            Label. <br>
+	 */
 	private Labels(String label) {
 		this.label = label;
 	}

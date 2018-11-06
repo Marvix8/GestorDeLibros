@@ -2,8 +2,10 @@ package ventana;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -29,16 +31,6 @@ public class VentanaSalir extends JDialog {
 	 * Label del botón Si.
 	 */
 	private final JPanel contentPanel = new JPanel();
-
-	public static void main(String[] args) {
-		try {
-			VentanaSalir dialog = new VentanaSalir(new Gestor());
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Carga la ventana para salir del gestor de libros. <br>
@@ -69,14 +61,21 @@ public class VentanaSalir extends JDialog {
 				JButton btnSi = new JButton(Labels.SI.getLabel());
 				btnSi.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						String salida = gestor.procesarCambios();
-						if (salida == null) {
-							VentanaMensaje ventanaMensaje = new VentanaMensaje(Titulos.SALIR.getTitulo(),
-									Mensajes.CONFIRMACION_DATOS_GUARDADOS.getMensaje());
-							ventanaMensaje.setVisible(true);
-						} else {
-							// TODO Mostrar salida como warning.
+						VentanaMensaje ventanaMensaje = null;
+						try {
+							gestor.procesarCambios();
+							ventanaMensaje = new VentanaMensaje(Titulos.EXITO.getTitulo(),
+									Mensajes.CONFIRMACION_DATOS_GUARDADOS.getMensaje(),
+									Toolkit.getDefaultToolkit().getImage(VentanaMensaje.class
+											.getResource("/javax/swing/plaf/metal/icons/ocean/info.png")));
+						} catch (IOException exception) {
+							ventanaMensaje = new VentanaMensaje(Titulos.ERROR_BASE_DATOS.getTitulo(),
+									new StringBuilder(Mensajes.ERROR_DATOS_GUARDADOS.getMensaje())
+											.append(exception.getMessage()).toString(),
+									Toolkit.getDefaultToolkit().getImage(VentanaMensaje.class
+											.getResource("/javax/swing/plaf/metal/icons/ocean/error.png")));
 						}
+						ventanaMensaje.setVisible(true);
 						System.exit(EXIT_ON_CLOSE);
 					}
 				});

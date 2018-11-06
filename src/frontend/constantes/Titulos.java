@@ -9,9 +9,34 @@ public enum Titulos {
 	 */
 	PRINCIPAL("Gestor de Libros"),
 	/**
+	 * Título para la lista de libros. <br>
+	 */
+	LIBROS("Libros"),
+	/**
+	 * Título sobre la información del libro. <br>
+	 */
+	INFORMACION_LIBRO("Información del libro"),
+	/**
+	 * Título para indicar que el libro buscado no existe en la base de datos.
+	 * <br>
+	 */
+	ISBN_INEXISTENTE("Error en búsqueda del ISBN "),
+	/**
+	 * Título para buscar el ISBN. <br>
+	 */
+	BUSCAR_ISBN("Buscar libro (ISBN)"),
+	/**
 	 * Título para salir del sistema. <br>
 	 */
 	SALIR("Salir"),
+	/**
+	 * Mensaje de éxito. <br>
+	 */
+	EXITO("Exito"),
+	/**
+	 * Titulo que indica que no hay datos en la base de datos. <br>
+	 */
+	BASE_DATOS_VACIA("No hay registros"),
 	/**
 	 * Titulo que indica un error de base de datos. <br>
 	 */

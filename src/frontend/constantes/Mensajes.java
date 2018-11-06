@@ -13,6 +13,29 @@ public enum Mensajes {
 	 */
 	CONFIRMACION_DATOS_GUARDADOS("Se han registrado los cambios exitosamente."),
 	/**
+	 * Mensaje para indicar que los libros fueron ordenados correctamente. <br>
+	 */
+	LIBROS_ORDENADOS("Los libros han sido ordenados por ISBN correctamente."),
+	/**
+	 * Mensaje para indicar que un libro fue eliminado de la base de datos
+	 * exitosamente. <br>
+	 */
+	REGISTRO_BORRADO("Registro borrado correctamente."),
+	/**
+	 * Mensaje indicando que el libro ya existe en la base de datos. <br>
+	 */
+	LIBRO_YA_EXISTENTE("El libro ya existe."),
+	/**
+	 * Mensaje para indicar un error a la hora de guardar los datos en la base
+	 * de datos. Debe ser seguido por el error que lo generó. <br>
+	 */
+	ERROR_DATOS_GUARDADOS("Ha ocurrido un error al guardar los datos: "),
+	/**
+	 * Mensaje para indicar que no hay ningún registro guardado en la base de
+	 * datos. <br>
+	 */
+	BASE_VACIA("No hay registros en la base de datos."),
+	/**
 	 * Mensaje a mostrar indicando que el libro no existe en la base de datos.
 	 * <br>
 	 */
