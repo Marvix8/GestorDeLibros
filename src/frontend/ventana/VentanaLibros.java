@@ -1,6 +1,7 @@
 package ventana;
 
 import java.awt.Color;
+import java.awt.Dialog.ModalExclusionType;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -70,6 +71,7 @@ public class VentanaLibros extends JFrame {
 	 *            Lista con los libros a mostrar. <br>
 	 */
 	public VentanaLibros(final Vector<Libro> listaLibros) {
+		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		setAlwaysOnTop(true);
 		setTitle(Titulos.LIBROS.getTitulo());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

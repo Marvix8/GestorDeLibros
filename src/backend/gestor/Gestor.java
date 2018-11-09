@@ -25,7 +25,7 @@ import excepciones.DatoInexistenteException;
 /**
  * Clase que administra un gestor de libros. <br>
  */
-public class Gestor{
+public class Gestor {
 	/**
 	 * Nombre y ubicación de la base de datos. <br>
 	 */
@@ -89,48 +89,48 @@ public class Gestor{
 		}
 	}
 
-	 // /**
-	 // * Ejecuta el gestor de libros. <br>
-	 // * CC: 9
-	 // */
-	public void ejecutar() {
-		this.controlarSalidaPorConsola();
-		// this.leeerLibrosEnBase();
-		int opcion;
-		this.libro = new Libro();
-		do {
-			this.cargarMenuPrincipal();
-			opcion = this.leerOpcionUsuario();
-			this.out.println();
-			// if (this.controlarBaseVacia(opcion)) {
-			// pausar("No hay registros.\n");
-			// // Si no hay registros no se puede hacer nada más que agregar.
-			// continue;
-			// }
-			// Para agregar, actualizar, consultar o dar de baja debo tener el
-			// ISBN.
-			// if (opcion < 5) {
-			// this.buscarLibroPorISBN();
-			// }
-			if (opcion == 1 && this.libroConsultado != null) {
-				out.println("El registro ya existe.");
-			} else {
-				if (this.registroInexitente(opcion)) {
-					out.println("\nRegistro no encontrado.");
-				} else {
-					// Si ya no tengo los casos que puede salir realizo la
-					// operación.
-					this.seleccionMenuPrincipal(opcion);
-				}
-			}
-			if (opcion < 7 && opcion >= 1) {
-				this.pausar("");
-			}
-		} while (opcion != 7);
-		teclado.close();
-		// this.procesarCambios();
-	}
-	
+	// // /**
+	// // * Ejecuta el gestor de libros. <br>
+	// // * CC: 9
+	// // */
+	// public void ejecutar() {
+	// this.controlarSalidaPorConsola();
+	// // this.leeerLibrosEnBase();
+	// int opcion;
+	// this.libro = new Libro();
+	// do {
+	// this.cargarMenuPrincipal();
+	// opcion = this.leerOpcionUsuario();
+	// this.out.println();
+	// // if (this.controlarBaseVacia(opcion)) {
+	// // pausar("No hay registros.\n");
+	// // // Si no hay registros no se puede hacer nada más que agregar.
+	// // continue;
+	// // }
+	// // Para agregar, actualizar, consultar o dar de baja debo tener el
+	// // ISBN.
+	// // if (opcion < 5) {
+	// // this.buscarLibroPorISBN();
+	// // }
+	// if (opcion == 1 && this.libroConsultado != null) {
+	// out.println("El registro ya existe.");
+	// } else {
+	// if (this.registroInexitente(opcion)) {
+	// out.println("\nRegistro no encontrado.");
+	// } else {
+	// // Si ya no tengo los casos que puede salir realizo la
+	// // operación.
+	// this.seleccionMenuPrincipal(opcion);
+	// }
+	// }
+	// if (opcion < 7 && opcion >= 1) {
+	// this.pausar("");
+	// }
+	// } while (opcion != 7);
+	// teclado.close();
+	// // this.procesarCambios();
+	// }
+
 	/**
 	 * Lee los libros en base. <br>
 	 */
@@ -179,7 +179,7 @@ public class Gestor{
 	public void darDeBajaLibro() {
 		this.libros.remove(this.libroConsultado);
 		this.out.println("Registro borrado correctamente.");
-		
+
 	}
 
 	/**
@@ -202,13 +202,11 @@ public class Gestor{
 	}
 
 	/**
-	 * Carga un libro en la base de datos. <br>
-	 * 
-	 * @param libro
-	 *            Libro a cargar. <br>
+	 * Carga un nuevo libro. <br>
 	 */
-	public void cargarLibro(final Libro libro) {
-		this.libros.add(libro);
+	public void cargarLibro() {
+		this.libros.add(this.libroBuscar);
+		this.libroBuscar = new Libro();
 	}
 
 	/**
@@ -230,29 +228,28 @@ public class Gestor{
 	 * Modifica información sobre un libro. <br>
 	 * CC: 5
 	 */
-//	private void modificarLibro() {
-//		switch (this.obtenerOpcionModificacion()) {
-//		case 1:
-//			this.dato.setTitulo(leerCadena("Ingrese el nuevo titulo"));
-//			break;
-//		case 2:
-//			this.dato.setAutor(leerCadena("Ingrese el nuevo autor"));
-//			break;
-//		case 3:
-//			this.dato.setEditorial(leerCadena("Ingrese el nuevo editorial"));
-//			break;
-//		case 4:
-//			this.dato.setEdicion(leerEntero("Ingrese el nuevo edicion"));
-//			break;
-//		case 5:
-//			this.dato.setAnioPublicacion(leerEntero("Ingrese el nuevo año publicacion"));
-//			break;
-//		}
-//		this.out.println("\nRegistro actualizado correctamente.");
-//	}
+	// private void modificarLibro() {
+	// switch (this.obtenerOpcionModificacion()) {
+	// case 1:
+	// this.dato.setTitulo(leerCadena("Ingrese el nuevo titulo"));
+	// break;
+	// case 2:
+	// this.dato.setAutor(leerCadena("Ingrese el nuevo autor"));
+	// break;
+	// case 3:
+	// this.dato.setEditorial(leerCadena("Ingrese el nuevo editorial"));
+	// break;
+	// case 4:
+	// this.dato.setEdicion(leerEntero("Ingrese el nuevo edicion"));
+	// break;
+	// case 5:
+	// this.dato.setAnioPublicacion(leerEntero("Ingrese el nuevo año
+	// publicacion"));
+	// break;
+	// }
+	// this.out.println("\nRegistro actualizado correctamente.");
+	// }
 
-	
-	
 	/**
 	 * Procesa los cambios en la base de datos. <br>
 	 * 
@@ -320,5 +317,26 @@ public class Gestor{
 		Vector<Libro> libro = new Vector<Libro>();
 		libro.add(this.libroConsultado);
 		return libro;
+	}
+
+	/**
+	 * Devuelve la información del libro consultado.
+	 * 
+	 * @return Libro consultado. <br>
+	 */
+	public Libro getLibroConsultado() {
+		return this.libroConsultado;
+	}
+
+	/**
+	 * Devuelve la información del libro buscado.
+	 * <p>
+	 * <i><b>Nota</b>: Esto devuelve el ISBN de un libro vacio, debe ser llamado
+	 * para el alta del mismo.</i><br>
+	 * 
+	 * @return Libro nuevo. <br>
+	 */
+	public Libro getNuevoLibro() {
+		return this.libroBuscar;
 	}
 }

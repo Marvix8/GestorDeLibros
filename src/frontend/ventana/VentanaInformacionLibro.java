@@ -29,6 +29,10 @@ import java.awt.event.ActionEvent;
  */
 public class VentanaInformacionLibro extends JDialog {
 	/**
+	 * Indica si el proceso de alta/modificación fue cancelado.
+	 */
+	private boolean cancelado;
+	/**
 	 * Textfield del ISBN actual. <br>
 	 */
 	private JTextField tfISBN;
@@ -82,7 +86,7 @@ public class VentanaInformacionLibro extends JDialog {
 		gbc_lbISBNDisplay.gridy = 0;
 		panelDatosLibros.add(lbISBNDisplay, gbc_lbISBNDisplay);
 
-		this.tfISBN = new JTextField();
+		this.tfISBN = new JTextField(libro.getISBN());
 		GridBagConstraints gbc_lblISBN = new GridBagConstraints();
 		gbc_lblISBN.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblISBN.insets = new Insets(0, 0, 5, 0);
@@ -98,7 +102,7 @@ public class VentanaInformacionLibro extends JDialog {
 		gbc_lblTituloDisplay.gridy = 1;
 		panelDatosLibros.add(lblTituloDisplay, gbc_lblTituloDisplay);
 
-		this.tfTitulo = new JTextField();
+		this.tfTitulo = new JTextField(libro.getTitulo());
 		GridBagConstraints gbc_lblTitulo = new GridBagConstraints();
 		gbc_lblTitulo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblTitulo.insets = new Insets(0, 0, 5, 0);
@@ -114,7 +118,7 @@ public class VentanaInformacionLibro extends JDialog {
 		gbc_lblAutorDisplay.gridy = 2;
 		panelDatosLibros.add(lblAutorDisplay, gbc_lblAutorDisplay);
 
-		this.tfAutor = new JTextField();
+		this.tfAutor = new JTextField(libro.getAutor());
 		GridBagConstraints gbc_lblAutor = new GridBagConstraints();
 		gbc_lblAutor.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblAutor.insets = new Insets(0, 0, 5, 0);
@@ -130,7 +134,7 @@ public class VentanaInformacionLibro extends JDialog {
 		gbc_lblEdicionDisplay.gridy = 3;
 		panelDatosLibros.add(lblEdicionDisplay, gbc_lblEdicionDisplay);
 
-		this.tfEdicion = new JTextField();
+		this.tfEdicion = new JTextField(libro.getEdicion());
 		GridBagConstraints gbc_lblEdicion = new GridBagConstraints();
 		gbc_lblEdicion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblEdicion.insets = new Insets(0, 0, 5, 0);
@@ -147,7 +151,7 @@ public class VentanaInformacionLibro extends JDialog {
 		gbc_lblAnoPublicacionDisplay.gridy = 4;
 		panelDatosLibros.add(lblAnoPublicacionDisplay, gbc_lblAnoPublicacionDisplay);
 
-		this.tfAnoPublicacion = new JTextField();
+		this.tfAnoPublicacion = new JTextField(libro.getAnioPublicacion());
 		GridBagConstraints gbc_lblAnoEdicion = new GridBagConstraints();
 		gbc_lblAnoEdicion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblAnoEdicion.insets = new Insets(0, 0, 5, 0);
@@ -163,7 +167,7 @@ public class VentanaInformacionLibro extends JDialog {
 		gbc_lblEditorialDisplay.gridy = 5;
 		panelDatosLibros.add(lblEditorialDisplay, gbc_lblEditorialDisplay);
 
-		this.tfEditorial = new JTextField();
+		this.tfEditorial = new JTextField(libro.getEditorial());
 		GridBagConstraints gbc_lblEditorial = new GridBagConstraints();
 		gbc_lblEditorial.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblEditorial.gridx = 1;
@@ -204,13 +208,25 @@ public class VentanaInformacionLibro extends JDialog {
 	 * Controla los cambios realizados. <br>
 	 */
 	public void controlarCambios() {
-
+		// Debe controlar que todos los campos hayan sido ingresado previo a
+		// guardar.
 	}
 
 	/**
 	 * Confirma la salida por pantalla. <br>
 	 */
 	private void confirmarSalirDePantalla() {
+		// Debe controlar si algún campo fue llenado, en ese caso preguntar si
+		// desea cancelar la operación.
+	}
 
+	/**
+	 * Indica si el proceso de alta/modificación fue cancelado. <br>
+	 * 
+	 * @return <b>true</b> si fue cancelado. <br>
+	 *         <b>false</b> si no fue cancelado. <br>
+	 */
+	public boolean isCancelado() {
+		return this.cancelado;
 	}
 }
