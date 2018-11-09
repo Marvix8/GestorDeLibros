@@ -233,17 +233,20 @@ public class VentanaPrincipal extends JFrame {
 			}
 			VentanaBuscarISBN ventanaBusqueda = new VentanaBuscarISBN(gestor);
 			ventanaBusqueda.setVisible(true);
-			this.gestor.buscarLibroPorISBN();
-			// Si encontró el libro es porque ya se encuentra en la base de
-			// datos. Aviso al usuario y salgo.
-			VentanaMensaje ventanaMensaje = new VentanaMensaje(
-					new StringBuilder(Titulos.ISBN_INEXISTENTE.getTitulo()).append(gestor.getISBN()).toString(),
-					Mensajes.LIBRO_YA_EXISTENTE.getMensaje(), Toolkit.getDefaultToolkit().getImage(
-							VentanaMensaje.class.getResource("/javax/swing/plaf/metal/icons/ocean/error.png")));
-			ventanaMensaje.setVisible(true);
+			if (!ventanaBusqueda.isCancelado()) {
+				this.gestor.buscarLibroPorISBN();
+				// Si encontró el libro es porque ya se encuentra en la base de
+				// datos. Aviso al usuario y salgo.
+				VentanaMensaje ventanaMensaje = new VentanaMensaje(
+						new StringBuilder(Titulos.ISBN_INEXISTENTE.getTitulo()).append(gestor.getISBN()).toString(),
+						Mensajes.LIBRO_YA_EXISTENTE.getMensaje(), Toolkit.getDefaultToolkit().getImage(
+								VentanaMensaje.class.getResource("/javax/swing/plaf/metal/icons/ocean/error.png")));
+				ventanaMensaje.setVisible(true);
+			}
 		} catch (DatoInexistenteException e) {
+			// De no existir el libro empiezo a cargar la información.
 			VentanaInformacionLibro ventanaInformacionLibro = new VentanaInformacionLibro(null);
-
+			ventanaInformacionLibro.setVisible(true);
 		}
 	}
 

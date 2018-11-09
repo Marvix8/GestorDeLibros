@@ -213,5 +213,4 @@ public class VentanaInformacionLibro extends JDialog {
 	private void confirmarSalirDePantalla() {
 
 	}
-
 }

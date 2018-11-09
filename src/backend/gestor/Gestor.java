@@ -16,9 +16,7 @@ import java.util.Vector;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import excepciones.BaseVaciaException;
@@ -27,7 +25,7 @@ import excepciones.DatoInexistenteException;
 /**
  * Clase que administra un gestor de libros. <br>
  */
-public class Gestor /* extends Util */ {
+public class Gestor{
 	/**
 	 * Nombre y ubicación de la base de datos. <br>
 	 */
@@ -44,21 +42,21 @@ public class Gestor /* extends Util */ {
 	 * Salida de mensajes del gestor. <br>
 	 */
 	private PrintStream out;
-//	/**
-//	 * Entrada de usuario. <br>
-//	 */
-//	private Scanner teclado;
 	/**
 	 * Libros en la base de datos. <br>
 	 */
 	private Vector<Libro> libros;
-	private Libro libroBuscar, dato;
-	private Libro libroActual;
 	/**
-	 * Actualmente no se usa, pero se deja para los métodos. <br>
+	 * Libro pivot en el que se busca por ISBN. <br>
 	 */
-	private int[] contador = new int[1];
-	
+	private Libro libroBuscar;
+	/**
+	 * Información del libro actual. <br>
+	 */
+	private Libro libroConsultado;
+	/**
+	 * NO MODIFICAR, DEBE SER DE 16 CARACTERES. <br>
+	 */
 	private static final String KEY = "COCObASILE20182C";
 
 	/**
@@ -67,9 +65,8 @@ public class Gestor /* extends Util */ {
 	public Gestor() throws IOException {
 		try {
 			this.libros = new Vector<Libro>();
-			this.contador[0] = 0;
 			this.libroBuscar = new Libro();
-			this.dato = new Libro();
+			this.libroConsultado = new Libro();
 			this.leerLibrosEnBase();
 		} catch (IOException exception) {
 			throw exception;
@@ -92,62 +89,47 @@ public class Gestor /* extends Util */ {
 		}
 	}
 
-	// /**
-	// * Controla que un registro exista para ciertas opciones. <br>
-	// *
-	// * @param opcion
-	// * Opción seleccionada por el usuario. <br>
-	// * @return <b>true</b> si no existe. <br>
-	// * <b>false</b> si existe. <br>
-	// */
-	// private boolean registroInexitente(final int opcion) {
-	// if (opcion >= 2 && opcion <= 4 && this.dato == null) {
-	// return true;
-	// }
-	// return false;
-	// }
-
-	// // /**
-	// // * Ejecuta el gestor de libros. <br>
-	// // * CC: 9
-	// // */
-	// public void ejecutar() {
-	// this.controlarSalidaPorConsola();
-	// // this.leeerLibrosEnBase();
-	// int opcion;
-	// this.libro = new Libro();
-	// do {
-	// this.cargarMenuPrincipal();
-	// opcion = this.leerOpcionUsuario();
-	// this.out.println();
-	// // if (this.controlarBaseVacia(opcion)) {
-	// // pausar("No hay registros.\n");
-	// // // Si no hay registros no se puede hacer nada más que agregar.
-	// // continue;
-	// // }
-	// // Para agregar, actualizar, consultar o dar de baja debo tener el
-	// // ISBN.
-	// // if (opcion < 5) {
-	// // this.buscarLibroPorISBN();
-	// // }
-	// if (opcion == 1 && this.dato != null) {
-	// out.println("El registro ya existe.");
-	// } else {
-	// if (this.registroInexitente(opcion)) {
-	// out.println("\nRegistro no encontrado.");
-	// } else {
-	// // Si ya no tengo los casos que puede salir realizo la
-	// // operación.
-	// this.seleccionMenuPrincipal(opcion);
-	// }
-	// }
-	// if (opcion < 7 && opcion >= 1) {
-	// this.pausar("");
-	// }
-	// } while (opcion != 7);
-	// teclado.close();
-	// // this.procesarCambios();
-	// }
+	 // /**
+	 // * Ejecuta el gestor de libros. <br>
+	 // * CC: 9
+	 // */
+	public void ejecutar() {
+		this.controlarSalidaPorConsola();
+		// this.leeerLibrosEnBase();
+		int opcion;
+		this.libro = new Libro();
+		do {
+			this.cargarMenuPrincipal();
+			opcion = this.leerOpcionUsuario();
+			this.out.println();
+			// if (this.controlarBaseVacia(opcion)) {
+			// pausar("No hay registros.\n");
+			// // Si no hay registros no se puede hacer nada más que agregar.
+			// continue;
+			// }
+			// Para agregar, actualizar, consultar o dar de baja debo tener el
+			// ISBN.
+			// if (opcion < 5) {
+			// this.buscarLibroPorISBN();
+			// }
+			if (opcion == 1 && this.libroConsultado != null) {
+				out.println("El registro ya existe.");
+			} else {
+				if (this.registroInexitente(opcion)) {
+					out.println("\nRegistro no encontrado.");
+				} else {
+					// Si ya no tengo los casos que puede salir realizo la
+					// operación.
+					this.seleccionMenuPrincipal(opcion);
+				}
+			}
+			if (opcion < 7 && opcion >= 1) {
+				this.pausar("");
+			}
+		} while (opcion != 7);
+		teclado.close();
+		// this.procesarCambios();
+	}
 	
 	/**
 	 * Lee los libros en base. <br>
@@ -184,84 +166,6 @@ public class Gestor /* extends Util */ {
 		}
 	}
 
-	
-//	/**
-//	 * Lee los libros en base. <br>
-//	 */
-//	private void leerLibrosEnBase2() throws IOException {
-//		try {
-//			Libro libro;
-//			String[] campos;
-//			Scanner entrada = new Scanner(new FileReader(NOMBRE_BASE));
-//			String linea = null;
-//			
-//			while (entrada.hasNextLine()) {
-//				try {
-//					KeyGenerator keyGenerator = KeyGenerator.getInstance(METODO_ENCRIPTACION);
-//					SecretKey clave = keyGenerator.generateKey();
-////					new SecretKeySpec() //("cocoBasile", METODO_ENCRIPTACION) //
-//					Cipher cipher = Cipher.getInstance(METODO_ENCRIPTACION);
-//					cipher.init(Cipher.DECRYPT_MODE, clave);
-//					String pepe = entrada.nextLine();
-//					
-//					Byte nina = Byte.valueOf(pepe);
-//					System.out.println(nina.toString());
-//
-//					linea = new String(cipher.doFinal(pepe.getBytes(ENCODING)));
-//					System.out.println("1" + linea);
-//				} catch (NoSuchAlgorithmException e) {
-//					System.out.println("1 " + e.getMessage());
-//				} catch (NoSuchPaddingException e) {
-//					System.out.println("2 " + e.getMessage());
-//				} catch (InvalidKeyException e) {
-//					System.out.println("3 " + e.getMessage());
-//				} catch (IllegalBlockSizeException | BadPaddingException e) {
-//					System.out.println("4 " + e.getMessage());
-//				}
-////				byte[] textoCifrado = cipher.doFinal(texto);
-// 
-//				libro = new Libro();
-//				campos = linea.split("\t");
-//				libro.setISBN(campos[0]);
-//				libro.setTitulo(campos[1]);
-//				libro.setAutor(campos[2]);
-//				libro.setEditorial(campos[3]);
-//				libro.setEdicion(Integer.parseInt(campos[4]));
-//				libro.setAnioPublicacion(Integer.parseInt(campos[5]));
-//				this.libros.add(libro);
-//			}
-//			entrada.close();
-//		} catch (IOException exception) {
-//			throw exception;
-//		}
-//	}
-	
-	// /**
-	// * Selecciona una opción del menú principal. <br>
-	// * CC: 5
-	// *
-	// * @param opcion
-	// * Opción seleccionada por el usuario. <br>
-	// */
-	// @SuppressWarnings("unchecked")
-	// private void seleccionMenuPrincipal(int opcion) {
-	// switch (opcion) {
-	// case 1:
-	// this.nuevoLibro();
-	// break;
-	// case 3:
-	// this.modificarLibro();
-	// break;
-	// case 5:
-	// Collections.sort(this.libros);
-	// this.out.println("Registros ordenados correctamente.");
-	// break;
-	// case 6:
-	// this.mostrarLibros();
-	// break;
-	// }
-	// }
-
 	/**
 	 * Ordena los libros en la base de datos. <br>
 	 */
@@ -273,20 +177,10 @@ public class Gestor /* extends Util */ {
 	 * Da un libro de baja. <br>
 	 */
 	public void darDeBajaLibro() {
-		this.libros.remove(this.dato);
+		this.libros.remove(this.libroConsultado);
 		this.out.println("Registro borrado correctamente.");
+		
 	}
-
-	// /**
-	// * Muestra los libros en la base. <br>
-	// * CC: 2
-	// */
-	// private void mostrarLibros() {
-	// for (int i = 0; i < this.libros.size(); i++) {
-	// this.imprimir(this.libros.get(i), this.contador);
-	// }
-	// this.out.println("Total de registros: " + this.libros.size() + ".");
-	// }
 
 	/**
 	 * Busca un libro por su ISBN. <br>
@@ -304,7 +198,7 @@ public class Gestor /* extends Util */ {
 		if (i < 0) {
 			throw new DatoInexistenteException();
 		}
-		this.dato = this.libros.get(i);
+		this.libroConsultado = this.libros.get(i);
 	}
 
 	/**
@@ -330,26 +224,6 @@ public class Gestor /* extends Util */ {
 	// this.libros.add(this.libroBuscar);
 	// this.libroBuscar = new Libro();
 	// this.out.println("\nRegistro agregado correctamente.");
-	// }
-
-	/**
-	 * Carga el menú para modificar información sobre un libro. <br>
-	 * CC: 2
-	 */
-	// private int obtenerOpcionModificacion() {
-	// this.out.println("Menú de modificación de campos");
-	// this.out.println("1.- titulo");
-	// this.out.println("2.- autor");
-	// this.out.println("3.- editorial");
-	// this.out.println("4.- edicion");
-	// this.out.println("5.- año de publicacion");
-	// int subopcion = this.leerEntero("Seleccione un número de campo a
-	// modificar");
-	// while (subopcion < 1 || subopcion > 5) {
-	// this.out.println("Opción no válida.");
-	// subopcion = this.leerEntero("Seleccione un número de campo a modificar");
-	// }
-	// return subopcion;
 	// }
 
 	/**
@@ -444,56 +318,7 @@ public class Gestor /* extends Util */ {
 	 */
 	public Vector<Libro> getLibroActual() {
 		Vector<Libro> libro = new Vector<Libro>();
-		libro.add(this.dato);
+		libro.add(this.libroConsultado);
 		return libro;
-	}
-
-	/**
-	 * Finaliza la instancia del libro actual y empieza una nueva.
-	 * <p>
-	 * <b>NOTA</b>: Esto solo debe ser usado para métodos que realizan algún
-	 * tipo de DML con la base de datos. <br>
-	 */
-	private void finalizarGestionActual() {
-		this.libroBuscar = new Libro();
-	}
-
-	/**
-	 * Muestra los libros por pantalla. <br>
-	 */
-	public void imprimir(Libro libro, int[] contador) {
-		System.out.println(libro.getISBN() + "\t" + libro.getTitulo() + "\t" + libro.getAutor() + "\t"
-				+ libro.getEditorial() + "\t" + libro.getEdicion() + "\t" + libro.getAnioPublicacion());
-	}
-
-	/**
-	 * Graba los libros en archivo. <br>
-	 */
-	public void imprimirEnArchivo2(Libro libro, PrintStream salida) {
-		try {
-			KeyGenerator keyGenerator = KeyGenerator.getInstance(METODO_ENCRIPTACION);
-			SecretKey clave = keyGenerator.generateKey();
-			Cipher cipher = Cipher.getInstance(METODO_ENCRIPTACION);
-			byte[] texto = new StringBuilder(libro.getISBN()).append("\t").append(libro.getTitulo()).append("\t")
-					.append(libro.getAutor()).append("\t")
-					.append(libro.getEditorial() + "\t" + libro.getEdicion() + "\t" + libro.getAnioPublicacion())
-					.toString().getBytes(ENCODING);
-			cipher.init(Cipher.ENCRYPT_MODE, clave);
-			//
-			// byte[] algo = "algo".getBytes(ENCODING);
-			// cipher.init(Cipher.ENCRYPT_MODE, clave);
-			// byte[] textoCifrado = cipher.doFinal(algo);
-			// System.out.println(new String(textoCifrado));
-
-			byte[] textoCifrado = cipher.doFinal(texto);
-			salida.println(new String(textoCifrado));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void imprimirEnArchivo(Libro libro, PrintStream salida) {
-		salida.println(libro.getISBN() + "\t" + libro.getTitulo() + "\t" + libro.getAutor() + "\t"
-				+ libro.getEditorial() + "\t" + libro.getEdicion() + "\t" + libro.getAnioPublicacion());
 	}
 }
