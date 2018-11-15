@@ -22,6 +22,18 @@ public enum Mensajes {
 	 */
 	REGISTRO_BORRADO("Registro borrado correctamente."),
 	/**
+	 * Mensaje para consultar si desea confirmar los cambios realizados. <br>
+	 */
+	CONFIRMAR_CAMBIOS("¿Desea confirmar los cambios realizados?"),
+	/**
+	 * Mensaje para consultar si desea descartar los cambios realizados. <br>
+	 */
+	DESCARTAR_CAMBIOS("¿Desea descartar los cambios realizados?"),
+	/**
+	 * Mensaje para indicar que no hubo cambios. <br>
+	 */
+	NINGUN_CAMBIO("No hay datos a actualizar."),
+	/**
 	 * Mensaje indicando que el libro ya existe en la base de datos. <br>
 	 */
 	LIBRO_YA_EXISTENTE("El libro ya existe."),

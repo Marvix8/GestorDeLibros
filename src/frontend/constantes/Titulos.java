@@ -22,6 +22,10 @@ public enum Titulos {
 	 */
 	ISBN_INEXISTENTE("Error en búsqueda del ISBN "),
 	/**
+	 * Título para indicar que se debe tomar una decisión. <br>
+	 */
+	DECISION("Decisión"),
+	/**
 	 * Título para buscar el ISBN. <br>
 	 */
 	BUSCAR_ISBN("Buscar libro (ISBN)"),

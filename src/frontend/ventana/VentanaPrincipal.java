@@ -254,6 +254,7 @@ public class VentanaPrincipal extends JFrame {
 			VentanaInformacionLibro ventanaInformacionLibro = new VentanaInformacionLibro(this.gestor.getNuevoLibro());
 			ventanaInformacionLibro.setVisible(true);
 			if (!ventanaInformacionLibro.isCancelado()) {
+				System.out.println("puto");
 				this.gestor.cargarLibro();
 			}
 		}
@@ -356,8 +357,23 @@ public class VentanaPrincipal extends JFrame {
 	 * Sale del gestor. <br>
 	 */
 	private void salirDelGestor() {
-		VentanaSalir ventanaSalir = new VentanaSalir(this.gestor);
-		ventanaSalir.setVisible(true);
+		VentanaConfirmacion ventanaConfirmacion = new VentanaConfirmacion(Titulos.SALIR.getTitulo(),
+				Mensajes.CONFIRMACION_SALIR.getMensaje());
+		ventanaConfirmacion.setVisible(true);
+		if (ventanaConfirmacion.getDecision()) {
+			try {
+				this.gestor.procesarCambios();
+				this.cargarVentanaExito(Mensajes.CONFIRMACION_DATOS_GUARDADOS.getMensaje());
+			} catch (IOException exception) {
+				VentanaMensaje ventanaMensaje = new VentanaMensaje(Titulos.ERROR_BASE_DATOS.getTitulo(),
+						new StringBuilder(Mensajes.ERROR_DATOS_GUARDADOS.getMensaje()).append(exception.getMessage())
+								.toString(),
+						Toolkit.getDefaultToolkit().getImage(
+								VentanaMensaje.class.getResource("/javax/swing/plaf/metal/icons/ocean/error.png")));
+				ventanaMensaje.setVisible(true);
+			}
+			System.exit(EXIT_ON_CLOSE);
+		}
 	}
 
 	/**

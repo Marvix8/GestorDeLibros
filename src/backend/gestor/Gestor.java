@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -38,10 +37,6 @@ public class Gestor {
 	 * Método de encriptación. <br>
 	 */
 	private static final String METODO_ENCRIPTACION = "AES";
-	/**
-	 * Salida de mensajes del gestor. <br>
-	 */
-	private PrintStream out;
 	/**
 	 * Libros en la base de datos. <br>
 	 */
@@ -88,48 +83,6 @@ public class Gestor {
 			throw new BaseVaciaException();
 		}
 	}
-
-	// // /**
-	// // * Ejecuta el gestor de libros. <br>
-	// // * CC: 9
-	// // */
-	// public void ejecutar() {
-	// this.controlarSalidaPorConsola();
-	// // this.leeerLibrosEnBase();
-	// int opcion;
-	// this.libro = new Libro();
-	// do {
-	// this.cargarMenuPrincipal();
-	// opcion = this.leerOpcionUsuario();
-	// this.out.println();
-	// // if (this.controlarBaseVacia(opcion)) {
-	// // pausar("No hay registros.\n");
-	// // // Si no hay registros no se puede hacer nada más que agregar.
-	// // continue;
-	// // }
-	// // Para agregar, actualizar, consultar o dar de baja debo tener el
-	// // ISBN.
-	// // if (opcion < 5) {
-	// // this.buscarLibroPorISBN();
-	// // }
-	// if (opcion == 1 && this.libroConsultado != null) {
-	// out.println("El registro ya existe.");
-	// } else {
-	// if (this.registroInexitente(opcion)) {
-	// out.println("\nRegistro no encontrado.");
-	// } else {
-	// // Si ya no tengo los casos que puede salir realizo la
-	// // operación.
-	// this.seleccionMenuPrincipal(opcion);
-	// }
-	// }
-	// if (opcion < 7 && opcion >= 1) {
-	// this.pausar("");
-	// }
-	// } while (opcion != 7);
-	// teclado.close();
-	// // this.procesarCambios();
-	// }
 
 	/**
 	 * Lee los libros en base. <br>
@@ -178,8 +131,6 @@ public class Gestor {
 	 */
 	public void darDeBajaLibro() {
 		this.libros.remove(this.libroConsultado);
-		this.out.println("Registro borrado correctamente.");
-
 	}
 
 	/**
@@ -208,47 +159,6 @@ public class Gestor {
 		this.libros.add(this.libroBuscar);
 		this.libroBuscar = new Libro();
 	}
-
-	/**
-	 * Carga un nuevo libro. <br>
-	 */
-	// private void nuevoLibro() {
-	// this.libroBuscar.setTitulo(leerCadena("Ingrese el titulo"));
-	// this.libroBuscar.setAutor(leerCadena("Ingrese el autor"));
-	// this.libroBuscar.setEditorial(leerCadena("Ingrese el editorial"));
-	// this.libroBuscar.setEdicion(leerEntero("Ingrese el edicion"));
-	// this.libroBuscar.setAnioPublicacion(leerEntero("Ingrese el año de
-	// publicacion"));
-	// this.libros.add(this.libroBuscar);
-	// this.libroBuscar = new Libro();
-	// this.out.println("\nRegistro agregado correctamente.");
-	// }
-
-	/**
-	 * Modifica información sobre un libro. <br>
-	 * CC: 5
-	 */
-	// private void modificarLibro() {
-	// switch (this.obtenerOpcionModificacion()) {
-	// case 1:
-	// this.dato.setTitulo(leerCadena("Ingrese el nuevo titulo"));
-	// break;
-	// case 2:
-	// this.dato.setAutor(leerCadena("Ingrese el nuevo autor"));
-	// break;
-	// case 3:
-	// this.dato.setEditorial(leerCadena("Ingrese el nuevo editorial"));
-	// break;
-	// case 4:
-	// this.dato.setEdicion(leerEntero("Ingrese el nuevo edicion"));
-	// break;
-	// case 5:
-	// this.dato.setAnioPublicacion(leerEntero("Ingrese el nuevo año
-	// publicacion"));
-	// break;
-	// }
-	// this.out.println("\nRegistro actualizado correctamente.");
-	// }
 
 	/**
 	 * Procesa los cambios en la base de datos. <br>
