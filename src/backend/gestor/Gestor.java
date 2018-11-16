@@ -28,7 +28,7 @@ public class Gestor {
 	/**
 	 * Nombre y ubicación de la base de datos. <br>
 	 */
-	private static final String NOMBRE_BASE = "./database/database.txt";
+	private static final String NOMBRE_BASE = "./database.txt";
 	/**
 	 * Encoding a utilizar. <br>
 	 */
