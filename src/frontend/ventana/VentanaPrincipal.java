@@ -91,7 +91,7 @@ public class VentanaPrincipal extends JFrame {
 		setIconImage(this.icono);
 		setTitle(Titulos.PRINCIPAL.getTitulo());
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
 		setBounds(100, 100, 310, 315);
 		this.addWindowListener(new ControlarVentanaPrincipal());
 		contentPane = new JPanel();

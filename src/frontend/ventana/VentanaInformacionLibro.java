@@ -8,6 +8,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -95,13 +97,28 @@ public class VentanaInformacionLibro extends JDialog {
 	private ControlarAnoPublicacion controlarAnoPublicacion;
 
 	/**
+	 * Clase para controlar la ventana principal. <br>
+	 */
+	private class ControlarVentanaPrincipal extends WindowAdapter {
+		/**
+		 * Controla la salida del gestor con el mismo criterio que el botón para
+		 * salir. <br>
+		 */
+		public void windowClosing(WindowEvent event) {
+			descartarCambios();
+		}
+	}
+
+	/**
 	 * Carga la información de un libro.
 	 * 
 	 * @param libro
 	 *            Libro actual. <br>
 	 */
 	public VentanaInformacionLibro(Libro libro) {
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setModal(true);
+		this.addWindowListener(new ControlarVentanaPrincipal());
 		this.libro = libro;
 		setTitle(Titulos.INFORMACION_LIBRO.getTitulo());
 		setBounds(100, 100, 450, 273);
@@ -305,16 +322,13 @@ public class VentanaInformacionLibro extends JDialog {
 		if (!this.controlarCambios()) {
 			setVisible(false);
 		} else {
-			// Si quedó algo pendiente de cambio consulto.
-			if (this.controlarCamposNoVacios()) {
-				VentanaConfirmacion ventanaConfirmacion = new VentanaConfirmacion(Titulos.DECISION.getTitulo(),
-						Mensajes.DESCARTAR_CAMBIOS.getMensaje());
-				ventanaConfirmacion.setVisible(true);
-				if (ventanaConfirmacion.getDecision()) {
-					setVisible(false);
-				} else {
-					return;
-				}
+			VentanaConfirmacion ventanaConfirmacion = new VentanaConfirmacion(Titulos.DECISION.getTitulo(),
+					Mensajes.DESCARTAR_CAMBIOS.getMensaje());
+			ventanaConfirmacion.setVisible(true);
+			if (ventanaConfirmacion.getDecision()) {
+				setVisible(false);
+			} else {
+				return;
 			}
 		}
 	}
@@ -369,12 +383,35 @@ public class VentanaInformacionLibro extends JDialog {
 	 *         <b>false</b> de lo contrario. <br>
 	 */
 	private boolean controlarCamposNoVacios() {
-		if (this.tfISBN.getText().length() != 0 && this.tfTitulo.getText().length() != 0
-				&& this.tfAutor.getText().length() != 0 && this.tfEdicion.getText().length() != 0
-				&& this.tfEditorial.getText().length() != 0 && this.tfAnoPublicacion.getText().length() != 0) {
-			return true;
+		if (this.tfISBN.getText().length() == 0) {
+			return false;
 		}
-		return false;
+		if (this.tfTitulo.getText().length() == 0) {
+			return false;
+		}
+		if (this.tfAutor.getText().length() == 0) {
+			return false;
+		}
+		if (this.tfEdicion.getText().length() == 0) {
+			return false;
+		}
+		if (this.tfEditorial.getText().length() == 0) {
+			return false;
+		}
+		if (this.tfAnoPublicacion.getText().length() == 0) {
+			return false;
+		}
+		return true;
+
+		// if (this.tfISBN.getText().length() != 0 &&
+		// this.tfTitulo.getText().length() != 0
+		// && this.tfAutor.getText().length() != 0 &&
+		// this.tfEdicion.getText().length() != 0
+		// && this.tfEditorial.getText().length() != 0 &&
+		// this.tfAnoPublicacion.getText().length() != 0) {
+		// return true;
+		// }
+		// return false;
 	}
 
 	/**
