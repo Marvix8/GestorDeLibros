@@ -1,12 +1,32 @@
 package gestor;
 
-public class Libro implements Comparable {
-
+/**
+ * Clase que administra la información de un libro. <br>
+ */
+public class Libro implements Comparable<Libro> {
+	/**
+	 * ISBN del libro. <br>
+	 */
 	private String ISBN;
+	/**
+	 * Titulo del libro. <br>
+	 */
 	private String titulo;
+	/**
+	 * Autor del libro. <br>
+	 */
 	private String autor;
+	/**
+	 * Editorial del libro. <br>
+	 */
 	private String editorial;
+	/**
+	 * Edición del libro. <br>
+	 */
 	private int edicion;
+	/**
+	 * Año de publicación del libro. <br>
+	 */
 	private int anioPublicacion;
 
 	public Libro() {
@@ -62,22 +82,6 @@ public class Libro implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object obj) {
-		if (!(obj instanceof Libro))
-			throw new ClassCastException();
-
-		Libro libro = (Libro) obj;
-
-		if (this.getISBN().compareTo(libro.getISBN()) > 0)
-			return 1;
-		else if (this.getISBN().compareTo(libro.getISBN()) < 0)
-			return -1;
-		else
-			return 0;
-
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -102,4 +106,14 @@ public class Libro implements Comparable {
 		return true;
 	}
 
+	@Override
+	public int compareTo(Libro libro) {
+		if (this.getISBN().compareTo(libro.getISBN()) > 0) {
+			return 1;
+		} else if (this.getISBN().compareTo(libro.getISBN()) < 0) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
 }
