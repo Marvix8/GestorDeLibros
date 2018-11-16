@@ -59,7 +59,41 @@ public enum Mensajes {
 	/**
 	 * Mensaje para salir del sistema. <br>
 	 */
-	SALIR("Desea salir del sistema");
+	SALIR("Desea salir del sistema"),
+	/**
+	 * Mensaje para indicar el formato válido del ISBN. <br>
+	 */
+	ISBN_INVALIDO("El ISBN debe ser de 10 ó 13 caracteres."),
+	/**
+	 * Mensaje para indicar el formato válido del título. <br>
+	 */
+	TITULO_INVALIDO("El título debe estar entre 1 y 100 caracteres."),
+	/**
+	 * Mensaje para indicar el formato válido del autor. <br>
+	 */
+	AUTOR_INVALIDO("El autor debe estar entre 1 y 50 caracteres."),
+	/**
+	 * Mensaje para indicar el formato válido de la editorial. <br>
+	 */
+	EDITORIAL_INVALIDO("La editorial debe estar entre 1 y 50 caracteres."),
+	/**
+	 * Mensaje para indicar el formato válido de la edición. <br>
+	 */
+	EDICION_INVALIDO("La edición debe estar entre 1 y 2147483647."),
+	/**
+	 * Mensaje para indicar el formato válido del año de edición. <br>
+	 */
+	ANO_PUBLICACION_INVALIDO("El año de edición debe estar entre 1 y 2147483647."),
+	/**
+	 * Mensaje para indicar que uno o varios items no se completaron. <br>
+	 */
+	ERROR_VACIO("Hay información que no se declaró. Complete los campos en rojo."),
+	/**
+	 * Mensaje para indicar que el formato de uno o varios items es inválido.
+	 * <br>
+	 */
+	ERROR_VALIDACION("Hay información que no se encuentra con el formato válido. Corrija los campos en amarillo.");
+
 	/**
 	 * Mensaje. <br>
 	 */

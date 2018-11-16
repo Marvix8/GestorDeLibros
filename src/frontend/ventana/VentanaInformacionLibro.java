@@ -1,7 +1,6 @@
 package ventana;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -10,22 +9,24 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import constantes.Labels;
 import constantes.Mensajes;
 import constantes.Titulos;
 import gestor.Libro;
+import validaciones.ControlarAnoPublicacion;
+import validaciones.ControlarAutor;
+import validaciones.ControlarEdicion;
+import validaciones.ControlarEditorial;
+import validaciones.ControlarISBN;
+import validaciones.ControlarTitulo;
 
 /**
  * Clase que muestra la ventana para modificar información sobre un libro.
@@ -69,39 +70,29 @@ public class VentanaInformacionLibro extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel panelDatosLibros = new JPanel();
 	/**
-	 * Borde si el dato se encuentra cargado correctamente.
+	 * Controlador del ISBN. <br>
 	 */
-	private Border borderActual;
+	private ControlarISBN controlarISBN;
 	/**
-	 * Indica el borde del textfield en caso de faltar un dato. <br>
+	 * Controlador del título. <br>
 	 */
-	private static final Border DATO_FALTANTE = BorderFactory.createLineBorder(Color.RED, 1);
-
+	private ControlarTitulo controlarTitulo;
 	/**
-	 * Clase para controlar los datos administrados al libro. <br>
+	 * Controlador del autor. <br>
 	 */
-	private class ControlarInformacion implements DocumentListener {
-		private JTextField jTextField;
-
-		public ControlarInformacion(final JTextField jTextField) {
-			this.jTextField = jTextField;
-		}
-
-		@Override
-		public void changedUpdate(DocumentEvent arg0) {
-			controlarTextfield(this.jTextField);
-		}
-
-		@Override
-		public void insertUpdate(DocumentEvent arg0) {
-			controlarTextfield(this.jTextField);
-		}
-
-		@Override
-		public void removeUpdate(DocumentEvent arg0) {
-			controlarTextfield(this.jTextField);
-		}
-	}
+	private ControlarAutor controlarAutor;
+	/**
+	 * Controlador de la edición. <br>
+	 */
+	private ControlarEdicion controlarEdicion;
+	/**
+	 * Controlador de la editorial. <br>
+	 */
+	private ControlarEditorial controlarEditorial;
+	/**
+	 * Controlador del año de publicación. <br>
+	 */
+	private ControlarAnoPublicacion controlarAnoPublicacion;
 
 	/**
 	 * Carga la información de un libro.
@@ -133,16 +124,14 @@ public class VentanaInformacionLibro extends JDialog {
 		panelDatosLibros.add(lbISBNDisplay, gbc_lbISBNDisplay);
 
 		this.tfISBN = new JTextField(libro.getISBN());
+		this.controlarISBN = new ControlarISBN(this.tfISBN);
 		GridBagConstraints gbc_lblISBN = new GridBagConstraints();
 		gbc_lblISBN.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblISBN.insets = new Insets(0, 0, 5, 0);
 		gbc_lblISBN.gridx = 1;
 		gbc_lblISBN.gridy = 0;
-		this.tfISBN.getDocument().addDocumentListener(new ControlarInformacion(this.tfISBN));
+		this.tfISBN.getDocument().addDocumentListener(this.controlarISBN);
 		panelDatosLibros.add(tfISBN, gbc_lblISBN);
-
-		// Siempre tenemos el formato del borde actual.
-		this.borderActual = this.tfISBN.getBorder();
 
 		JLabel lblTituloDisplay = new JLabel(Labels.TITULO.getLabel());
 		GridBagConstraints gbc_lblTituloDisplay = new GridBagConstraints();
@@ -153,12 +142,13 @@ public class VentanaInformacionLibro extends JDialog {
 		panelDatosLibros.add(lblTituloDisplay, gbc_lblTituloDisplay);
 
 		this.tfTitulo = new JTextField(libro.getTitulo());
+		this.controlarTitulo = new ControlarTitulo(this.tfTitulo);
 		GridBagConstraints gbc_lblTitulo = new GridBagConstraints();
 		gbc_lblTitulo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblTitulo.insets = new Insets(0, 0, 5, 0);
 		gbc_lblTitulo.gridx = 1;
 		gbc_lblTitulo.gridy = 1;
-		this.tfTitulo.getDocument().addDocumentListener(new ControlarInformacion(this.tfTitulo));
+		this.tfTitulo.getDocument().addDocumentListener(this.controlarTitulo);
 		panelDatosLibros.add(tfTitulo, gbc_lblTitulo);
 
 		JLabel lblAutorDisplay = new JLabel(Labels.AUTOR.getLabel());
@@ -170,12 +160,13 @@ public class VentanaInformacionLibro extends JDialog {
 		panelDatosLibros.add(lblAutorDisplay, gbc_lblAutorDisplay);
 
 		this.tfAutor = new JTextField(libro.getAutor());
+		this.controlarAutor = new ControlarAutor(this.tfAutor);
 		GridBagConstraints gbc_lblAutor = new GridBagConstraints();
 		gbc_lblAutor.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblAutor.insets = new Insets(0, 0, 5, 0);
 		gbc_lblAutor.gridx = 1;
 		gbc_lblAutor.gridy = 2;
-		this.tfAutor.getDocument().addDocumentListener(new ControlarInformacion(this.tfAutor));
+		this.tfAutor.getDocument().addDocumentListener(this.controlarAutor);
 		panelDatosLibros.add(tfAutor, gbc_lblAutor);
 
 		JLabel lblEdicionDisplay = new JLabel(Labels.EDICION.getLabel());
@@ -187,12 +178,13 @@ public class VentanaInformacionLibro extends JDialog {
 		panelDatosLibros.add(lblEdicionDisplay, gbc_lblEdicionDisplay);
 
 		this.tfEdicion = new JTextField(String.valueOf(libro.getEdicion()));
+		this.controlarEdicion = new ControlarEdicion(this.tfEdicion);
 		GridBagConstraints gbc_lblEdicion = new GridBagConstraints();
 		gbc_lblEdicion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblEdicion.insets = new Insets(0, 0, 5, 0);
 		gbc_lblEdicion.gridx = 1;
 		gbc_lblEdicion.gridy = 3;
-		this.tfEdicion.getDocument().addDocumentListener(new ControlarInformacion(this.tfEdicion));
+		this.tfEdicion.getDocument().addDocumentListener(this.controlarEdicion);
 		panelDatosLibros.add(tfEdicion, gbc_lblEdicion);
 
 		JLabel lblAnoPublicacionDisplay = new JLabel();
@@ -205,12 +197,13 @@ public class VentanaInformacionLibro extends JDialog {
 		panelDatosLibros.add(lblAnoPublicacionDisplay, gbc_lblAnoPublicacionDisplay);
 
 		this.tfAnoPublicacion = new JTextField(String.valueOf(libro.getAnioPublicacion()));
+		this.controlarAnoPublicacion = new ControlarAnoPublicacion(this.tfAnoPublicacion);
 		GridBagConstraints gbc_lblAnoEdicion = new GridBagConstraints();
 		gbc_lblAnoEdicion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblAnoEdicion.insets = new Insets(0, 0, 5, 0);
 		gbc_lblAnoEdicion.gridx = 1;
 		gbc_lblAnoEdicion.gridy = 4;
-		this.tfAnoPublicacion.getDocument().addDocumentListener(new ControlarInformacion(this.tfAnoPublicacion));
+		this.tfAnoPublicacion.getDocument().addDocumentListener(this.controlarAnoPublicacion);
 		panelDatosLibros.add(tfAnoPublicacion, gbc_lblAnoEdicion);
 
 		JLabel lblEditorialDisplay = new JLabel(Labels.EDITORIAL.getLabel());
@@ -222,11 +215,12 @@ public class VentanaInformacionLibro extends JDialog {
 		panelDatosLibros.add(lblEditorialDisplay, gbc_lblEditorialDisplay);
 
 		this.tfEditorial = new JTextField(libro.getEditorial());
+		this.controlarEditorial = new ControlarEditorial(this.tfEditorial);
 		GridBagConstraints gbc_lblEditorial = new GridBagConstraints();
 		gbc_lblEditorial.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblEditorial.gridx = 1;
 		gbc_lblEditorial.gridy = 5;
-		this.tfEditorial.getDocument().addDocumentListener(new ControlarInformacion(this.tfEditorial));
+		this.tfEditorial.getDocument().addDocumentListener(this.controlarEditorial);
 		panelDatosLibros.add(tfEditorial, gbc_lblEditorial);
 
 		{
@@ -248,13 +242,16 @@ public class VentanaInformacionLibro extends JDialog {
 			{
 				JButton btnCancelar = new JButton(Labels.CANCELAR.getLabel());
 				btnCancelar.addActionListener(new ActionListener() {
+
 					public void actionPerformed(ActionEvent arg0) {
 						descartarCambios();
 					}
+
 				});
 				btnCancelar.setHorizontalTextPosition(SwingConstants.CENTER);
 				btnCancelar.setAlignmentX(Component.CENTER_ALIGNMENT);
 				buttonPane.add(btnCancelar);
+
 			}
 		}
 	}
@@ -263,6 +260,19 @@ public class VentanaInformacionLibro extends JDialog {
 	 * Guarda la información administrada. <br>
 	 */
 	private void guardarLibro() {
+		// Controlamos que los datos esten cargados correctamente.
+		if (!this.controlarCamposNoVacios()) {
+			VentanaMensaje ventanaMensaje = new VentanaMensaje(Titulos.ERROR_VALIDACION.getTitulo(),
+					Mensajes.ERROR_VACIO.getMensaje(), null);
+			ventanaMensaje.setVisible(true);
+			return;
+		}
+		if (!this.controlarCamposValidos()) {
+			VentanaMensaje ventanaMensaje = new VentanaMensaje(Titulos.ERROR_VALIDACION.getTitulo(),
+					Mensajes.ERROR_VALIDACION.getMensaje(), null);
+			ventanaMensaje.setVisible(true);
+			return;
+		}
 		this.cancelado = false;
 		// Si se realizaron cambios se pregunta si desea
 		// guardarlos.
@@ -296,7 +306,7 @@ public class VentanaInformacionLibro extends JDialog {
 			setVisible(false);
 		} else {
 			// Si quedó algo pendiente de cambio consulto.
-			if (!this.controlarCamposVacios()) {
+			if (this.controlarCamposNoVacios()) {
 				VentanaConfirmacion ventanaConfirmacion = new VentanaConfirmacion(Titulos.DECISION.getTitulo(),
 						Mensajes.DESCARTAR_CAMBIOS.getMensaje());
 				ventanaConfirmacion.setVisible(true);
@@ -353,28 +363,43 @@ public class VentanaInformacionLibro extends JDialog {
 	}
 
 	/**
-	 * Controla que los text fields se encuentren vacios. <br>
+	 * Controla que los text fields no se encuentren vacios. <br>
 	 * 
-	 * @return <b>true</b> si se encuentran vacios. <br>
+	 * @return <b>true</b> si no se encuentran vacios. <br>
 	 *         <b>false</b> de lo contrario. <br>
 	 */
-	private boolean controlarCamposVacios() {
-		if (!this.tfISBN.getText().equals("")) {
+	private boolean controlarCamposNoVacios() {
+		if (this.tfISBN.getText().length() != 0 && this.tfTitulo.getText().length() != 0
+				&& this.tfAutor.getText().length() != 0 && this.tfEdicion.getText().length() != 0
+				&& this.tfEditorial.getText().length() != 0 && this.tfAnoPublicacion.getText().length() != 0) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Controla que los campos tengan el formato válido. <br>
+	 * 
+	 * @return <b>true</b> si es válido. <br>
+	 *         <b>false</b> si no es válido. <br>
+	 */
+	private boolean controlarCamposValidos() {
+		if (!this.controlarISBN.isFormatoValido()) {
 			return false;
 		}
-		if (!this.tfTitulo.getText().equals("")) {
+		if (!this.controlarTitulo.isFormatoValido()) {
 			return false;
 		}
-		if (!this.tfAutor.getText().equals("")) {
+		if (!this.controlarAutor.isFormatoValido()) {
 			return false;
 		}
-		if (!this.tfEdicion.getText().equals("")) {
+		if (!this.controlarEdicion.isFormatoValido()) {
 			return false;
 		}
-		if (!this.tfEditorial.getText().equals("")) {
+		if (!this.controlarEditorial.isFormatoValido()) {
 			return false;
 		}
-		if (!this.tfAnoPublicacion.getText().equals("")) {
+		if (!this.controlarAnoPublicacion.isFormatoValido()) {
 			return false;
 		}
 		return true;
@@ -388,19 +413,5 @@ public class VentanaInformacionLibro extends JDialog {
 	 */
 	public boolean isCancelado() {
 		return this.cancelado;
-	}
-
-	/**
-	 * Muestra el campo según la información cargada. <br>
-	 * 
-	 * @param jTextField
-	 *            Campo a controlar. <br>
-	 */
-	public void controlarTextfield(JTextField jTextField) {
-		if (jTextField.getText().equals("")) {
-			jTextField.setBorder(DATO_FALTANTE);
-		} else {
-			jTextField.setBorder(this.borderActual);
-		}
 	}
 }

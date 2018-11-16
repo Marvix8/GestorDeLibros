@@ -23,11 +23,11 @@ public class Libro implements Comparable<Libro> {
 	/**
 	 * Edición del libro. <br>
 	 */
-	private int edicion;
+	private int edicion = 1;
 	/**
 	 * Año de publicación del libro. <br>
 	 */
-	private int anioPublicacion;
+	private int anioPublicacion = 1900;
 
 	public Libro() {
 

@@ -35,6 +35,9 @@ import gestor.GestorOpciones;
 public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	/**
+	 * Ícono de la aplicación. <br>
+	 */
 	private BufferedImage icono;
 	/**
 	 * Gestor de libros. <br>
