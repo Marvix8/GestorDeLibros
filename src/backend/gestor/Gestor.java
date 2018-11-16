@@ -101,6 +101,10 @@ public class Gestor {
 			inputStream.read(bytesCifrado);
 			inputStream.close();
 			byte[] bytesDecifrados = cipher.doFinal(bytesCifrado);
+			// Si no hay nada salgo para evitar un error.
+			if (bytesDecifrados.length == 0) {
+				return;
+			}
 			// Leemos los archivos decifrados.
 			for (String entrada : new String(bytesDecifrados, ENCODING).split("\\|")) {
 				libro = new Libro();
@@ -167,6 +171,10 @@ public class Gestor {
 	 *             No se pudo grabar el archivo. <br>
 	 */
 	public void procesarCambios() throws IOException {
+		// Si no hay libros no hay nada que procesar.
+		if (this.libros.size() == 0) {
+			return;
+		}
 		FileOutputStream salida;
 		StringBuilder stringSalida = new StringBuilder();
 		try {
