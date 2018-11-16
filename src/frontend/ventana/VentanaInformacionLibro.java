@@ -77,6 +77,9 @@ public class VentanaInformacionLibro extends JDialog {
 	 */
 	private static final Border DATO_FALTANTE = BorderFactory.createLineBorder(Color.RED, 1);
 
+	/**
+	 * Clase para controlar los datos administrados al libro. <br>
+	 */
 	private class ControlarInformacion implements DocumentListener {
 		private JTextField jTextField;
 
@@ -107,6 +110,7 @@ public class VentanaInformacionLibro extends JDialog {
 	 *            Libro actual. <br>
 	 */
 	public VentanaInformacionLibro(Libro libro) {
+		setModal(true);
 		this.libro = libro;
 		setTitle(Titulos.INFORMACION_LIBRO.getTitulo());
 		setBounds(100, 100, 450, 273);
@@ -289,7 +293,7 @@ public class VentanaInformacionLibro extends JDialog {
 		this.cancelado = true;
 		// Si no se realizó ningún cambio puedo salir.
 		if (!this.controlarCambios()) {
-//			setVisible(false);
+			setVisible(false);
 		} else {
 			// Si quedó algo pendiente de cambio consulto.
 			if (!this.controlarCamposVacios()) {
@@ -297,7 +301,7 @@ public class VentanaInformacionLibro extends JDialog {
 						Mensajes.DESCARTAR_CAMBIOS.getMensaje());
 				ventanaConfirmacion.setVisible(true);
 				if (ventanaConfirmacion.getDecision()) {
-//					setVisible(false);
+					setVisible(false);
 				} else {
 					return;
 				}

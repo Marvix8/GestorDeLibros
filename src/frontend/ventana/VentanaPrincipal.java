@@ -9,8 +9,12 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -31,6 +35,7 @@ import gestor.GestorOpciones;
 public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private BufferedImage icono;
 	/**
 	 * Gestor de libros. <br>
 	 */
@@ -53,9 +58,23 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	/**
+	 * Clase para controlar la ventana principal. <br>
+	 */
+	private class ControlarVentanaPrincipal extends WindowAdapter {
+		/**
+		 * Controla la salida del gestor con el mismo criterio que el botón para
+		 * salir. <br>
+		 */
+		public void windowClosing(WindowEvent event) {
+			salirDelGestor();
+		}
+	}
+
+	/**
 	 * Carga la ventana principal del gestor. <br>
 	 */
 	public VentanaPrincipal() {
+		this.cargarRecursos();
 		try {
 			this.gestor = new Gestor();
 		} catch (IOException e) {
@@ -66,10 +85,12 @@ public class VentanaPrincipal extends JFrame {
 			ventanaMensaje.setVisible(true);
 			System.exit(EXIT_ON_CLOSE);
 		}
+		setIconImage(this.icono);
 		setTitle(Titulos.PRINCIPAL.getTitulo());
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 310, 315);
+		this.addWindowListener(new ControlarVentanaPrincipal());
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.menu);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -252,9 +273,9 @@ public class VentanaPrincipal extends JFrame {
 		} catch (DatoInexistenteException e) {
 			// De no existir el libro empiezo a cargar la información.
 			VentanaInformacionLibro ventanaInformacionLibro = new VentanaInformacionLibro(this.gestor.getNuevoLibro());
+			ventanaInformacionLibro.setIconImage(this.icono);
 			ventanaInformacionLibro.setVisible(true);
 			if (!ventanaInformacionLibro.isCancelado()) {
-				System.out.println("puto");
 				this.gestor.cargarLibro();
 			}
 		}
@@ -271,6 +292,7 @@ public class VentanaPrincipal extends JFrame {
 			if (!ventanaBusqueda.isCancelado()) {
 				this.gestor.buscarLibroPorISBN();
 				VentanaLibros ventanaLibros = new VentanaLibros(gestor.getLibroActual());
+				ventanaLibros.setIconImage(this.icono);
 				ventanaLibros.setVisible(true);
 			}
 		} catch (BaseVaciaException e) {
@@ -312,6 +334,7 @@ public class VentanaPrincipal extends JFrame {
 				this.gestor.buscarLibroPorISBN();
 				VentanaInformacionLibro ventanaInformacionLibro = new VentanaInformacionLibro(
 						this.gestor.getLibroConsultado());
+				ventanaInformacionLibro.setIconImage(this.icono);
 				ventanaInformacionLibro.setVisible(true);
 			}
 		} catch (DatoInexistenteException e) {
@@ -332,6 +355,7 @@ public class VentanaPrincipal extends JFrame {
 		try {
 			this.gestor.controlarBaseVacia(GestorOpciones.LISTAR);
 			VentanaLibros ventanaLibros = new VentanaLibros(this.gestor.getLibros());
+			ventanaLibros.setIconImage(this.icono);
 			ventanaLibros.setVisible(true);
 		} catch (BaseVaciaException e) {
 			this.cargarVentanaBaseVacia();
@@ -411,5 +435,16 @@ public class VentanaPrincipal extends JFrame {
 				Mensajes.ERROR_BUSQUEDA.getMensaje(), Toolkit.getDefaultToolkit()
 						.getImage(VentanaMensaje.class.getResource("/javax/swing/plaf/metal/icons/ocean/error.png")));
 		ventanaMensaje.setVisible(true);
+	}
+
+	/**
+	 * Carga los recursos del gestor. <br>
+	 */
+	private void cargarRecursos() {
+		try {
+			this.icono = ImageIO.read(this.getClass().getResource("/gestor.png"));
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }
