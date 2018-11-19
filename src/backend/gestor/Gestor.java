@@ -257,4 +257,42 @@ public class Gestor {
 	public Libro getNuevoLibro() {
 		return this.libroBuscar;
 	}
+	
+	/*
+	private void nuevoLibro() {
+		// se lee el titulo
+		leerCadena(título);
+		// se lee el titulo mientras la longitud se encuentre entre 0-100
+		while(longitud_titulo<0 || longitud_titulo>100)
+			leerCadena(título);
+			
+		// se lee el autor
+		leerCadena(autor);
+		// se lee el autor mientras la longitud se encuentre entre 0-50
+		while(longitud_autor<0 || longitud_autor>50)
+			leerCadena(autor); 
+			
+		// se lee la editorial
+		leerCadena(Editorial);
+		// se lee la editorial mientras la longitud se encuentre entre 0-50
+		while(longitud_editorial<0 || longitud_editorial>50)
+			leerCadena(Editorial); 
+		
+		// se lee la edicion
+		leerCadena(Edicion) ;
+		// se lee la edicion mientras la longitud se encuentre entre 0-50
+		while(es_numérico <0 || longitud_editorial>50)
+			leerCadena(Edicion);
+		
+		// se lee el año de publicacion
+		this.libro.setAnioPublicacion(leerEntero("Ingrese el año de publicacion"));
+		// se agrega el libro
+		this.libros.add(this.libro); 
+		// se crea el libro
+		this.libro = new Libro();
+		// se informa que se agrego correctamente
+		this.out.println("\nRegistro agregado correctamente."); 
+	}
+
+	 */
 }
