@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -33,6 +35,19 @@ public class VentanaConfirmacion extends JDialog {
 	private boolean decision;
 
 	/**
+	 * Clase para controlar la ventana de confirmación. <br>
+	 */
+	private class ControlarVentanaPrincipal extends WindowAdapter {
+		/**
+		 * Controla la salida del gestor con el mismo criterio que el botón para
+		 * salir. <br>
+		 */
+		public void windowClosing(WindowEvent event) {
+			aceptarRespuestaUsuario(false);
+		}
+	}
+
+	/**
 	 * Carga una ventana de confirmación por parte del usuario. <br>
 	 * 
 	 * @param titulo
@@ -41,8 +56,10 @@ public class VentanaConfirmacion extends JDialog {
 	 *            Mensaje a mostrar. <br>
 	 */
 	public VentanaConfirmacion(final String titulo, final String mensaje) {
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setTitle(titulo);
 		setModal(true);
+		this.addWindowListener(new ControlarVentanaPrincipal());
 		setBounds(100, 100, 389, 159);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());

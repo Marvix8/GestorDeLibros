@@ -28,7 +28,7 @@ public class ControlarISBN extends ControlarTextField {
 		}
 		if (isbn.length() != 10 && isbn.length() != 13) {
 			super.formatoValido = false;
-			super.mensajeErrorValidacion(isbn.length() + " " + Mensajes.ISBN_INVALIDO.getMensaje());
+			super.mensajeErrorValidacion(Mensajes.ISBN_INVALIDO.getMensaje());
 		} else {
 			super.formatoValido = true;
 		}
