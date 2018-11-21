@@ -20,6 +20,7 @@ import javax.swing.event.ListSelectionListener;
 import constantes.Labels;
 import constantes.Titulos;
 import gestor.Libro;
+import javax.swing.JScrollPane;
 
 /**
  * Clase que carga los libros en base de datos.
@@ -63,6 +64,7 @@ public class VentanaLibros extends JFrame {
 	private Vector<String> titulos = new Vector<String>();
 	private JPanel contentPane;
 	private static final long serialVersionUID = 1L;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Crea una ventana con los libros actuales. <br>
@@ -90,20 +92,23 @@ public class VentanaLibros extends JFrame {
 		gbl_contentPane.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		gbl_contentPane.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
-
-		listLibrosDisplay = new JList<String>(this.titulos);
-		listLibrosDisplay.setBorder(new LineBorder(new Color(0, 0, 0)));
-		listLibrosDisplay.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent arg0) {
-				actualizarLabelsLibro();
-			}
-		});
-		GridBagConstraints gbc_listLibrosDisplay = new GridBagConstraints();
-		gbc_listLibrosDisplay.fill = GridBagConstraints.BOTH;
-		gbc_listLibrosDisplay.insets = new Insets(0, 0, 0, 5);
-		gbc_listLibrosDisplay.gridx = 0;
-		gbc_listLibrosDisplay.gridy = 0;
-		contentPane.add(listLibrosDisplay, gbc_listLibrosDisplay);
+		
+		scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 0;
+		contentPane.add(scrollPane, gbc_scrollPane);
+		
+				listLibrosDisplay = new JList<String>(this.titulos);
+				scrollPane.setViewportView(listLibrosDisplay);
+				listLibrosDisplay.setBorder(new LineBorder(new Color(0, 0, 0)));
+				listLibrosDisplay.addListSelectionListener(new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent arg0) {
+						actualizarLabelsLibro();
+					}
+				});
 
 		JPanel panelDatosLibros = new JPanel();
 		panelDatosLibros.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -118,7 +123,7 @@ public class VentanaLibros extends JFrame {
 		gbl_panelDatosLibros.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		gbl_panelDatosLibros.rowWeights = new double[] { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE };
 		panelDatosLibros.setLayout(gbl_panelDatosLibros);
-
+		
 		JLabel lbISBNDisplay = new JLabel(Labels.ISBN.getLabel());
 		GridBagConstraints gbc_lbISBNDisplay = new GridBagConstraints();
 		gbc_lbISBNDisplay.anchor = GridBagConstraints.EAST;
